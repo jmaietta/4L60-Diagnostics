@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lt1diagnostics.local/schemas/baseline.schema.json",
+  "title": "LT1Diagnostics baseline definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "definitionVersion", "verificationStatus", "productionEligible", "baselineId", "baselineType", "metricId", "dimensions", "expectedLow", "expectedHigh", "expectedNominal", "unit", "minimumSampleCount", "sourceReferences"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "verificationStatus": { "enum": ["Unverified", "Verified", "Superseded"] },
+    "productionEligible": { "type": "boolean" },
+    "baselineId": { "type": "string", "minLength": 1 },
+    "baselineType": { "type": ["string", "null"] },
+    "metricId": { "type": ["string", "null"] },
+    "dimensions": { "type": "object" },
+    "expectedLow": { "type": ["number", "null"] },
+    "expectedHigh": { "type": ["number", "null"] },
+    "expectedNominal": { "type": ["number", "null"] },
+    "unit": { "type": ["string", "null"] },
+    "minimumSampleCount": { "type": ["integer", "null"], "minimum": 1 },
+    "sourceReferences": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [{ "if": { "properties": { "verificationStatus": { "const": "Unverified" } } }, "then": { "properties": { "productionEligible": { "const": false } } } }]
+}

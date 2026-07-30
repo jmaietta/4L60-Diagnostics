@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsHardwareTestProject>true</IsHardwareTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LT1Diagnostics.Transport\LT1Diagnostics.Transport.csproj" />
+  </ItemGroup>
+</Project>

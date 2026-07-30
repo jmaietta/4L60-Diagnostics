@@ -1,0 +1,97 @@
+{
+  "$schema": "../schemas/protocol.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "a276-1994-bd-lt1",
+  "application": "A276: 1994 5.7L LT1 VIN P, 1,4B and 6D cars; target Roadmaster capture verification pending",
+  "deviceAddress": 244,
+  "baudRate": 8192,
+  "dataPin": "M",
+  "encodedLengthBias": 82,
+  "checksum": "Modulo-256 sum of every frame byte including checksum equals zero",
+  "mode1Datasets": [
+    { "datasetId": 0, "requestLengthByte": 87, "responseLengthByte": 146, "dataByteCount": 60, "sourceReference": "A276.DS: MODE 1 MESSAGE 0" },
+    { "datasetId": 1, "requestLengthByte": 87, "responseLengthByte": 132, "dataByteCount": 46, "sourceReference": "A276.DS: MODE 1 MESSAGE 1" },
+    { "datasetId": 2, "requestLengthByte": 87, "responseLengthByte": 139, "dataByteCount": 53, "sourceReference": "A276.DS: MODE 1 MESSAGE 2" },
+    { "datasetId": 4, "requestLengthByte": 87, "responseLengthByte": 131, "dataByteCount": 45, "sourceReference": "A276.DS: MODE 1 MESSAGE 4" },
+    { "datasetId": 6, "requestLengthByte": 87, "responseLengthByte": 124, "dataByteCount": 38, "sourceReference": "A276.DS: MODE 1 MESSAGE 6" }
+  ],
+  "controlModes": [
+    { "mode": 0, "name": "Return to normal mode", "requestLengthByte": 86, "sourceReference": "A276.DS: MODE 0" },
+    { "mode": 8, "name": "Disable normal communications", "requestLengthByte": 86, "sourceReference": "A276.DS: MODE 8" },
+    { "mode": 9, "name": "Enable normal communications", "requestLengthByte": 86, "sourceReference": "A276.DS: MODE 9" }
+  ],
+  "signals": [
+    { "signalId": "logged-dtc-word-7", "datasetId": 1, "dataByteOffset": 0, "dataType": "bitfield", "scale": 1, "offset": 0, "unit": null, "sourceReference": "A276.DS: Mode 1 Message 1 word 1", "bits": [
+      { "bit": 7, "name": "OUTPUT SPEED LOW", "code": 24 }
+    ] },
+    { "signalId": "logged-dtc-word-9", "datasetId": 1, "dataByteOffset": 2, "dataType": "bitfield", "scale": 1, "offset": 0, "unit": null, "sourceReference": "A276.DS: Mode 1 Message 1 word 3", "bits": [
+      { "bit": 0, "name": "LONG SYSTEM VOLTAGE HIGH", "code": 76 },
+      { "bit": 1, "name": "SYSTEM VOLTAGE LOW", "code": 75 },
+      { "bit": 2, "name": "ASR ACTIVE FAULT", "code": 74 },
+      { "bit": 3, "name": "FORCE MOTOR CURRENT", "code": 73 },
+      { "bit": 4, "name": "OUTPUT SPEED LOSS", "code": 72 },
+      { "bit": 5, "name": "TRANSMISSION TEMPERATURE LOW", "code": 59 },
+      { "bit": 6, "name": "TRANSMISSION TEMPERATURE HIGH", "code": 58 },
+      { "bit": 7, "name": "PRESSURE SWITCH MANIFOLD", "code": 28 }
+    ] },
+    { "signalId": "logged-dtc-word-10", "datasetId": 1, "dataByteOffset": 3, "dataType": "bitfield", "scale": 1, "offset": 0, "unit": null, "sourceReference": "A276.DS: Mode 1 Message 1 word 4", "bits": [
+      { "bit": 0, "name": "LOW RATIO", "code": 86 },
+      { "bit": 1, "name": "TCC STUCK ON", "code": 85 },
+      { "bit": 2, "name": "3-2 DOWNSHIFT FEEDBACK FAULT (ODM)", "code": 84 },
+      { "bit": 3, "name": "TCC CONTROL FEEDBACK FAULT (ODM)", "code": 83 },
+      { "bit": 4, "name": "SHIFT A SOLENOID FAULT (ODM)", "code": 82 },
+      { "bit": 5, "name": "SHIFT B SOLENOID FAULT (ODM)", "code": 81 },
+      { "bit": 6, "name": "TRANSMISSION COMPONENT SLIPPING", "code": 80 },
+      { "bit": 7, "name": "TRANSMISSION OVER TEMPERATURE", "code": 79 }
+    ] },
+    { "signalId": "throttle-voltage", "datasetId": 1, "dataByteOffset": 5, "dataType": "uint8", "scale": 0.0196078431372549, "offset": 0, "unit": "V", "sourceReference": "A276.DS: Mode 1 Message 1 word 6" },
+    { "signalId": "engine-speed", "datasetId": 1, "dataByteOffset": 7, "dataType": "uint16be", "scale": 0.125, "offset": 0, "unit": "rpm", "sourceReference": "A276.DS: Mode 1 Message 1 words 8-9" },
+    { "signalId": "vehicle-speed", "datasetId": 1, "dataByteOffset": 9, "dataType": "uint8", "scale": 0.5, "offset": 0, "unit": "mph", "sourceReference": "A276.DS: Mode 1 Message 1 word 10" },
+    { "signalId": "torque-signal-pressure", "datasetId": 1, "dataByteOffset": 10, "dataType": "uint8", "scale": 1, "offset": 0, "unit": "psi", "sourceReference": "A276.DS: Mode 1 Message 1 word 11" },
+    { "signalId": "force-motor-reference-current", "datasetId": 1, "dataByteOffset": 11, "dataType": "uint8", "scale": 0.01953125, "offset": 0, "unit": "A", "sourceReference": "A276.DS: Mode 1 Message 1 word 12" },
+    { "signalId": "force-motor-actual-current", "datasetId": 1, "dataByteOffset": 12, "dataType": "uint8", "scale": 0.01953125, "offset": 0, "unit": "A", "sourceReference": "A276.DS: Mode 1 Message 1 word 13" },
+    { "signalId": "force-motor-duty-cycle", "datasetId": 1, "dataByteOffset": 13, "dataType": "uint8", "scale": 0.392156862745098, "offset": 0, "unit": "%", "sourceReference": "A276.DS: Mode 1 Message 1 word 14" },
+    { "signalId": "range-flags", "datasetId": 1, "dataByteOffset": 14, "dataType": "bitfield", "scale": 1, "offset": 0, "unit": null, "sourceReference": "A276.DS: Mode 1 Message 1 word 15", "bits": [
+      { "bit": 0, "name": "LOW GEAR", "code": null },
+      { "bit": 1, "name": "DRIVE 2", "code": null },
+      { "bit": 2, "name": "DRIVE 3", "code": null },
+      { "bit": 3, "name": "DRIVE 4", "code": null },
+      { "bit": 5, "name": "REVERSE", "code": null },
+      { "bit": 6, "name": "PARK/NEUTRAL", "code": null },
+      { "bit": 7, "name": "ILLEGAL RANGE", "code": null }
+    ] },
+    { "signalId": "transmission-ignition-voltage", "datasetId": 1, "dataByteOffset": 15, "dataType": "uint8", "scale": 0.1, "offset": 0, "unit": "V", "sourceReference": "A276.DS: Mode 1 Message 1 word 16" },
+    { "signalId": "commanded-gear", "datasetId": 1, "dataByteOffset": 16, "dataType": "uint8", "scale": 1, "offset": 1, "unit": "gear", "sourceReference": "A276.DS: Mode 1 Message 1 word 17" },
+    { "signalId": "latest-1-2-shift-error", "datasetId": 1, "dataByteOffset": 19, "dataType": "uint8", "scale": 0.025, "offset": 0, "unit": "s", "sourceReference": "A276.DS: Mode 1 Message 1 word 20" },
+    { "signalId": "latest-2-3-shift-error", "datasetId": 1, "dataByteOffset": 20, "dataType": "uint8", "scale": 0.025, "offset": 0, "unit": "s", "sourceReference": "A276.DS: Mode 1 Message 1 word 21" },
+    { "signalId": "absolute-slip-source-value", "datasetId": 1, "dataByteOffset": 21, "dataType": "int16be", "scale": 0.125, "offset": 0, "unit": "rpm", "sourceReference": "A276.DS: Mode 1 Message 1 words 22-23; source labels value absolute and signed, requiring vehicle clarification" },
+    { "signalId": "latest-1-2-shift-time", "datasetId": 1, "dataByteOffset": 23, "dataType": "uint8", "scale": 0.025, "offset": 0, "unit": "s", "sourceReference": "A276.DS: Mode 1 Message 1 word 24" },
+    { "signalId": "latest-2-3-shift-time", "datasetId": 1, "dataByteOffset": 24, "dataType": "uint8", "scale": 0.025, "offset": 0, "unit": "s", "sourceReference": "A276.DS: Mode 1 Message 1 word 25" },
+    { "signalId": "transmission-prom-id", "datasetId": 1, "dataByteOffset": 25, "dataType": "uint16be", "scale": 1, "offset": 0, "unit": null, "sourceReference": "A276.DS: Mode 1 Message 1 words 26-27" },
+    { "signalId": "3-2-solenoid-duty-cycle", "datasetId": 1, "dataByteOffset": 27, "dataType": "uint8", "scale": 0.392156862745098, "offset": 0, "unit": "%", "sourceReference": "A276.DS: Mode 1 Message 1 word 28" },
+    { "signalId": "transmission-output-speed", "datasetId": 1, "dataByteOffset": 29, "dataType": "uint16be", "scale": 0.125, "offset": 0, "unit": "rpm", "sourceReference": "A276.DS: Mode 1 Message 1 words 30-31" },
+    { "signalId": "coolant-temperature", "datasetId": 1, "dataByteOffset": 31, "dataType": "uint8", "scale": 0.75, "offset": -40, "unit": "degC", "sourceReference": "A276.DS: Mode 1 Message 1 word 32" },
+    { "signalId": "transmission-fluid-temperature", "datasetId": 1, "dataByteOffset": 32, "dataType": "uint8", "scale": 0.75, "offset": -40, "unit": "degC", "sourceReference": "A276.DS: Mode 1 Message 1 word 33" },
+    { "signalId": "tcc-duty-cycle", "datasetId": 1, "dataByteOffset": 33, "dataType": "uint16be", "scale": 0.00152587890625, "offset": 0, "unit": "%", "sourceReference": "A276.DS: Mode 1 Message 1 words 34-35" },
+    { "signalId": "transmission-output-commands", "datasetId": 1, "dataByteOffset": 37, "dataType": "bitfield", "scale": 1, "offset": 0, "unit": null, "sourceReference": "A276.DS: Mode 1 Message 1 word 38", "bits": [
+      { "bit": 0, "name": "TCC CONTROL", "code": null },
+      { "bit": 1, "name": "TCC ENABLE", "code": null },
+      { "bit": 2, "name": "SHIFT A", "code": null },
+      { "bit": 3, "name": "SHIFT B", "code": null }
+    ] },
+    { "signalId": "shift-status", "datasetId": 1, "dataByteOffset": 43, "dataType": "bitfield", "scale": 1, "offset": 0, "unit": null, "sourceReference": "A276.DS: Mode 1 Message 1 word 44", "bits": [
+      { "bit": 0, "name": "START OF SHIFT", "code": null },
+      { "bit": 1, "name": "END OF SHIFT", "code": null },
+      { "bit": 2, "name": "POWERTRAIN IN MOTION", "code": null },
+      { "bit": 3, "name": "IGNITION OFF", "code": null }
+    ] }
+  ],
+  "sourceReferences": [
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS",
+    "ECMHACK-ALDL-COMMS-2026-07-30",
+    "GM-4L60E-TECH-GUIDE-1992:pages 34 and 38 for non-byte-level functional corroboration"
+  ]
+}

@@ -1,0 +1,734 @@
+<Window
+    x:Class="LT1Diagnostics.App.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:protocol="using:LT1Diagnostics.Protocol.A276"
+    xmlns:transport="using:LT1Diagnostics.Transport.Abstractions"
+    xmlns:vm="using:LT1Diagnostics.App.ViewModels"
+    Title="4L60 Diagnostics"
+    Width="1360"
+    Height="820"
+    MinWidth="1080"
+    MinHeight="700"
+    Background="#F8FAFC"
+    Foreground="#0F172A"
+    FontSize="15"
+    FontFamily="Segoe UI Variable Text, Segoe UI, Inter">
+
+  <Window.Styles>
+    <Style Selector="TextBlock.kicker">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="LetterSpacing" Value="1.1" />
+      <Setter Property="Foreground" Value="#475569" />
+    </Style>
+    <Style Selector="TextBlock.pageTitle">
+      <Setter Property="FontSize" Value="36" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="LetterSpacing" Value="-0.7" />
+      <Setter Property="Foreground" Value="#0F172A" />
+    </Style>
+    <Style Selector="TextBlock.sectionTitle">
+      <Setter Property="FontSize" Value="19" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#1E293B" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="Medium" />
+      <Setter Property="Foreground" Value="#334155" />
+      <Setter Property="LineHeight" Value="23" />
+    </Style>
+    <Style Selector="TextBlock.metric">
+      <Setter Property="FontSize" Value="30" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#0F172A" />
+      <Setter Property="LetterSpacing" Value="-0.4" />
+    </Style>
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E2E8F0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="22" />
+      <Setter Property="BoxShadow" Value="0 2 10 0 #120F172A" />
+    </Style>
+    <Style Selector="ListBoxItem">
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Margin" Value="0,0,0,4" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="ListBoxItem:pointerover">
+      <Setter Property="Background" Value="#F1F5F9" />
+    </Style>
+    <Style Selector="ListBoxItem:selected">
+      <Setter Property="Background" Value="#DBEAFE" />
+    </Style>
+    <Style Selector="Button.nav">
+      <Setter Property="Height" Value="46" />
+      <Setter Property="Padding" Value="14,0" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Foreground" Value="#CBD5E1" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}"
+                  HorizontalAlignment="Stretch">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.nav TextBlock">
+      <Setter Property="Foreground" Value="#CBD5E1" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.nav:pointerover">
+      <Setter Property="Background" Value="#1E293B" />
+      <Setter Property="Foreground" Value="#F8F9F6" />
+    </Style>
+    <Style Selector="Button.nav:pointerover TextBlock">
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="Button.nav.active">
+      <Setter Property="Background" Value="#1D4ED8" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="Button.nav.active TextBlock">
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="Button.primary">
+      <Setter Property="MinHeight" Value="48" />
+      <Setter Property="MinWidth" Value="132" />
+      <Setter Property="Padding" Value="20,0" />
+      <Setter Property="Background" Value="#2563EB" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.primary:pointerover">
+      <Setter Property="Background" Value="#1D4ED8" />
+    </Style>
+    <Style Selector="Button.primary:pressed">
+      <Setter Property="Background" Value="#1E40AF" />
+    </Style>
+    <Style Selector="Button.primary:disabled">
+      <Setter Property="Opacity" Value="0.72" />
+      <Setter Property="Background" Value="#94A3B8" />
+      <Setter Property="Foreground" Value="#F8FAFC" />
+      <Setter Property="Cursor" Value="Arrow" />
+    </Style>
+    <Style Selector="Button.secondary">
+      <Setter Property="MinHeight" Value="48" />
+      <Setter Property="MinWidth" Value="122" />
+      <Setter Property="Padding" Value="20,0" />
+      <Setter Property="Background" Value="#EFF6FF" />
+      <Setter Property="Foreground" Value="#1D4ED8" />
+      <Setter Property="BorderBrush" Value="#93C5FD" />
+      <Setter Property="BorderThickness" Value="1.5" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Button.secondary:pointerover">
+      <Setter Property="Background" Value="#DBEAFE" />
+      <Setter Property="BorderBrush" Value="#60A5FA" />
+    </Style>
+    <Style Selector="Button.secondary:pressed">
+      <Setter Property="Background" Value="#BFDBFE" />
+    </Style>
+    <Style Selector="Button.secondary:disabled">
+      <Setter Property="Opacity" Value="0.65" />
+      <Setter Property="Background" Value="#F1F5F9" />
+      <Setter Property="Foreground" Value="#64748B" />
+      <Setter Property="BorderBrush" Value="#CBD5E1" />
+      <Setter Property="Cursor" Value="Arrow" />
+    </Style>
+  </Window.Styles>
+
+  <Grid ColumnDefinitions="224,*">
+    <Border Grid.Column="0" Background="#0F172A">
+      <Grid RowDefinitions="Auto,*,Auto" Margin="16,20,16,18">
+        <StackPanel Grid.Row="0" Spacing="18">
+          <Grid ColumnDefinitions="38,*" ColumnSpacing="10">
+            <Border Width="38" Height="38" Background="#2563EB" CornerRadius="7">
+              <TextBlock Text="4L" FontSize="13" FontWeight="Bold" Foreground="White"
+                         HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+              <TextBlock Text="4L60 DIAGNOSTICS" FontSize="12" FontWeight="Bold" Foreground="#F3F5F1" LetterSpacing="0.7" />
+              <TextBlock Text="ROADMASTER / 4L60E" FontSize="10" Foreground="#CBD5E1" LetterSpacing="0.7" />
+            </StackPanel>
+          </Grid>
+
+          <Border Background="#172033" BorderBrush="#263349" BorderThickness="1" CornerRadius="7" Padding="13">
+            <StackPanel Spacing="4">
+              <TextBlock Text="ACTIVE VEHICLE" FontSize="10" FontWeight="Bold" Foreground="#94A3B8" LetterSpacing="1" />
+              <TextBlock Text="1994 Buick Roadmaster" FontSize="14" FontWeight="SemiBold" Foreground="#F8FAFC" />
+              <TextBlock Text="LT1 5.7L  ·  4L60E" FontSize="12" Foreground="#CBD5E1" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="0,24,0,0" Spacing="5">
+          <TextBlock Text="WORKSPACE" Margin="12,0,0,7" FontSize="10" FontWeight="Bold" Foreground="#94A3B8" LetterSpacing="1.2" />
+
+          <Button Classes="nav" Classes.active="{Binding IsGuidePage}" Command="{Binding NavigateGuideCommand}" AutomationProperties.Name="How to use this app">
+            <TextBlock Text="How to use this app" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+          <Button Classes="nav" Classes.active="{Binding IsOverviewPage}" Command="{Binding NavigateOverviewCommand}" AutomationProperties.Name="Overview">
+            <TextBlock Text="Overview" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+          <Button Classes="nav" Classes.active="{Binding IsConnectPage}" Command="{Binding NavigateConnectCommand}" AutomationProperties.Name="Connect vehicle">
+            <TextBlock Text="Connect vehicle" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+          <Button Classes="nav" Classes.active="{Binding IsTroubleCodesPage}" Command="{Binding NavigateTroubleCodesCommand}" AutomationProperties.Name="Trouble codes">
+            <TextBlock Text="Trouble codes" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+          <Button Classes="nav" Classes.active="{Binding IsLiveDataPage}" Command="{Binding NavigateLiveDataCommand}" AutomationProperties.Name="Measurements">
+            <TextBlock Text="Measurements" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+          <Button Classes="nav" Classes.active="{Binding IsTransmissionPage}" Command="{Binding NavigateTransmissionCommand}" AutomationProperties.Name="Transmission">
+            <TextBlock Text="Transmission" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+          <Button Classes="nav" Classes.active="{Binding IsSessionsPage}" Command="{Binding NavigateSessionsCommand}" AutomationProperties.Name="Saved sessions">
+            <TextBlock Text="Saved sessions" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+          <Button Classes="nav" Classes.active="{Binding IsReportsPage}" Command="{Binding NavigateReportsCommand}" AutomationProperties.Name="Reports">
+            <TextBlock Text="Reports" FontSize="15" Margin="8,0,0,0" />
+          </Button>
+        </StackPanel>
+
+        <Border Grid.Row="2" BorderBrush="#263349" BorderThickness="0,1,0,0" Padding="10,15,10,0">
+          <StackPanel Spacing="7">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+              <Ellipse Width="7" Height="7" Fill="#5DA975" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="DIAGNOSTIC MODE" FontSize="10" FontWeight="Bold" Foreground="#E2E8F0" LetterSpacing="0.7" />
+            </Grid>
+              <TextBlock Text="Capture and analysis workspace" FontSize="11" Foreground="#CBD5E1" />
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Column="1" RowDefinitions="68,*">
+      <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="#E0E3DD" BorderThickness="0,0,0,1">
+        <Grid Margin="30,0" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal" Spacing="9" VerticalAlignment="Center">
+            <Ellipse Width="8" Height="8" Fill="#2563EB" />
+            <TextBlock Text="{Binding ConnectionStatus}" FontSize="14" FontWeight="SemiBold" Foreground="#1E293B" />
+            <TextBlock Text="/" Foreground="#C2C6C0" />
+            <TextBlock Text="{Binding DeviceSummary}" FontSize="13" FontWeight="Medium" Foreground="#334155" TextTrimming="CharacterEllipsis" MaxWidth="500" />
+          </StackPanel>
+          <Button Grid.Column="1" Classes="secondary" Content="How to use" Command="{Binding NavigateGuideCommand}" MinHeight="38" MinWidth="104" Padding="14,0" />
+          <Border Grid.Column="2" Background="#EFF6FF" CornerRadius="12" Padding="11,6">
+            <TextBlock Text="A276 DIAGNOSTIC CAPTURE" FontSize="10" FontWeight="Bold" Foreground="#1D4ED8" LetterSpacing="0.8" />
+          </Border>
+        </Grid>
+      </Border>
+
+      <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="34,30,34,32">
+          <!-- In-app tutorial -->
+          <StackPanel IsVisible="{Binding IsGuidePage}" Spacing="24">
+            <Grid ColumnDefinitions="*">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="kicker" Text="GETTING STARTED" />
+                <TextBlock Classes="pageTitle" Text="How to use 4L60 Diagnostics" />
+                <TextBlock Classes="muted" Text="Start with the demo, then follow the same workflow when the Roadmaster is connected." />
+              </StackPanel>
+            </Grid>
+
+            <Border Background="#0F172A" CornerRadius="9" Padding="28">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="30">
+                <StackPanel Spacing="10">
+                  <TextBlock Text="THE FASTEST WAY TO LEARN" FontSize="11" FontWeight="Bold" Foreground="#93C5FD" LetterSpacing="1.1" />
+                  <TextBlock Text="Try the app without a car" FontSize="25" FontWeight="SemiBold" Foreground="#FFFFFF" />
+                  <TextBlock Text="The guided demo creates a synthetic diagnostic session, then takes you directly to the populated Measurements screen. Nothing is sent to a vehicle." FontSize="15" FontWeight="Medium" Foreground="#F1F5F9" TextWrapping="Wrap" MaxWidth="720" LineHeight="23" />
+                  <TextBlock Text="Preparing the synthetic session. This usually takes a few seconds..." IsVisible="{Binding IsBusy}" FontSize="14" FontWeight="SemiBold" Foreground="#93C5FD" />
+                </StackPanel>
+                <Button Grid.Column="1" Classes="primary" Content="{Binding DemoButtonText}" Command="{Binding RunDemoCommand}" VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+
+            <StackPanel Spacing="12">
+              <TextBlock Classes="sectionTitle" Text="The basic workflow" />
+              <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="13">
+                <Border Grid.Column="0" Classes="card">
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="1" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Connect" /><TextBlock Classes="muted" Text="Connect the OBD-I diagnostic cable. Connect the vehicle end to the car's diagnostic port and the USB end to your laptop." TextWrapping="Wrap" /></StackPanel>
+                </Border>
+                <Border Grid.Column="1" Classes="card">
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="2" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Capture" /><TextBlock Classes="muted" Text="Wait until the app says “Snapshot ready.” Raw vehicle data is saved automatically." TextWrapping="Wrap" /></StackPanel>
+                </Border>
+                <Border Grid.Column="2" Classes="card">
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="3" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Review" /><TextBlock Classes="muted" Text="Open Trouble codes, Measurements, and Transmission." TextWrapping="Wrap" /></StackPanel>
+                </Border>
+                <Border Grid.Column="3" Classes="card">
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="4" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Save" /><TextBlock Classes="muted" Text="The app saves a .lt1raw session file. Open Saved sessions, select the file, then click Replay selected session." TextWrapping="Wrap" /></StackPanel>
+                </Border>
+              </Grid>
+            </StackPanel>
+
+            <Grid ColumnDefinitions="1.25*,*" ColumnSpacing="16">
+              <Border Grid.Column="0" Classes="card" Padding="27">
+                <StackPanel Spacing="14">
+                  <TextBlock Classes="sectionTitle" Text="Vehicle connection checklist" />
+                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="01" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Connect the vehicle end of the OBD-I diagnostic cable to the car's diagnostic port and the USB end to your laptop." TextWrapping="Wrap" /></Grid>
+                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="02" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Turn the key to ON. The engine may be off for the first snapshot." TextWrapping="Wrap" /></Grid>
+                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="03" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Open Connect vehicle, select Find connected cables, and choose the cable." TextWrapping="Wrap" /></Grid>
+                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="04" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Select Connect to vehicle. Wait until the app says “Snapshot ready” or displays an explanation." TextWrapping="Wrap" /></Grid>
+                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="05" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Review the result pages. Disconnect before unplugging the cable." TextWrapping="Wrap" /></Grid>
+                  <Button Classes="secondary" Content="Connect vehicle  →" Command="{Binding NavigateConnectCommand}" HorizontalAlignment="Left" Margin="0,5,0,0" />
+                </StackPanel>
+              </Border>
+
+              <Border Grid.Column="1" Classes="card" Padding="27" VerticalAlignment="Top">
+                <StackPanel Spacing="16">
+                  <TextBlock Classes="kicker" Text="WHAT THE STATUS MEANS" />
+                  <Grid ColumnDefinitions="136,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="18" RowSpacing="12">
+                    <TextBlock Grid.Row="0" Text="Snapshot ready" FontSize="15" LineHeight="23" FontWeight="SemiBold" Foreground="#166534" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Both requested messages arrived." FontSize="15" LineHeight="23" FontWeight="Medium" Foreground="#1E293B" TextWrapping="Wrap" VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Row="1" Text="Incomplete" FontSize="15" LineHeight="23" FontWeight="SemiBold" Foreground="#92400E" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Something was missing; read the explanation." FontSize="15" LineHeight="23" FontWeight="Medium" Foreground="#1E293B" TextWrapping="Wrap" VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Row="2" Text="Clean" FontSize="15" LineHeight="23" FontWeight="SemiBold" Foreground="#166534" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="No framing or checksum failure was detected." FontSize="15" LineHeight="23" FontWeight="Medium" Foreground="#1E293B" TextWrapping="Wrap" VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Row="3" Text="Validation pending" FontSize="15" LineHeight="23" FontWeight="SemiBold" Foreground="#92400E" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Useful data, but not yet approved for repair conclusions." FontSize="15" LineHeight="23" FontWeight="Medium" Foreground="#1E293B" TextWrapping="Wrap" VerticalAlignment="Center" />
+                  </Grid>
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <StackPanel Spacing="12">
+              <TextBlock Classes="sectionTitle" Text="What each screen is for" />
+              <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="13" RowSpacing="13">
+                <Border Grid.Row="0" Grid.Column="0" Classes="card"><StackPanel Spacing="6"><TextBlock FontSize="15" FontWeight="SemiBold" Text="Trouble codes" /><TextBlock Classes="muted" Text="Shows transmission DTC flag bits found in the snapshot." TextWrapping="Wrap" /></StackPanel></Border>
+                <Border Grid.Row="0" Grid.Column="1" Classes="card"><StackPanel Spacing="6"><TextBlock FontSize="15" FontWeight="SemiBold" Text="Measurements" /><TextBlock Classes="muted" Text="Shows RPM, speed, voltage, temperatures, and link quality." TextWrapping="Wrap" /></StackPanel></Border>
+                <Border Grid.Row="0" Grid.Column="2" Classes="card"><StackPanel Spacing="6"><TextBlock FontSize="15" FontWeight="SemiBold" Text="Transmission" /><TextBlock Classes="muted" Text="Shows captured 4L60E command states and measurements." TextWrapping="Wrap" /></StackPanel></Border>
+                <Border Grid.Row="1" Grid.Column="0" Classes="card"><StackPanel Spacing="6"><TextBlock FontSize="15" FontWeight="SemiBold" Text="Saved sessions" /><TextBlock Classes="muted" Text="Locates the raw capture for replay and later re-decoding." TextWrapping="Wrap" /></StackPanel></Border>
+                <Border Grid.Row="1" Grid.Column="1" Classes="card"><StackPanel Spacing="6"><TextBlock FontSize="15" FontWeight="SemiBold" Text="Reports" /><TextBlock Classes="muted" Text="Will hold evidence-backed conclusions after vehicle validation." TextWrapping="Wrap" /></StackPanel></Border>
+                <Border Grid.Row="1" Grid.Column="2" Background="#F0FDF4" BorderBrush="#BBE4C7" BorderThickness="1" CornerRadius="8" Padding="22"><StackPanel Spacing="6"><TextBlock FontSize="15" FontWeight="SemiBold" Foreground="#166534" Text="Built-in safety" /><TextBlock Classes="muted" Text="The app captures diagnostic data; it does not flash the PCM or command the transmission." TextWrapping="Wrap" /></StackPanel></Border>
+              </Grid>
+            </StackPanel>
+          </StackPanel>
+
+          <!-- Overview -->
+          <StackPanel IsVisible="{Binding IsOverviewPage}" Spacing="24">
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="kicker" Text="OVERVIEW / 01" />
+                <TextBlock Classes="pageTitle" Text="Vehicle diagnostic workspace" />
+                <TextBlock Classes="muted" Text="Connect the vehicle, capture a diagnostic snapshot, and review the results in one place." />
+              </StackPanel>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="9" VerticalAlignment="Bottom">
+                <Button Classes="secondary" Content="Try demo" Command="{Binding RunDemoCommand}" />
+                <Button Classes="primary" Content="Connect vehicle  →" Command="{Binding NavigateConnectCommand}" />
+              </StackPanel>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="14">
+              <Border Grid.Column="0" Classes="card"><StackPanel Spacing="8"><TextBlock Classes="kicker" Text="CONNECTION" /><TextBlock Classes="metric" Text="{Binding ConnectionStatus}" /><TextBlock Classes="muted" Text="Current acquisition state" /></StackPanel></Border>
+              <Border Grid.Column="1" Classes="card"><StackPanel Spacing="8"><TextBlock Classes="kicker" Text="PROTOCOL" /><TextBlock Classes="metric" Text="{Binding ProtocolDecodeStatus}" /><TextBlock Classes="muted" Text="A276 snapshot state" /></StackPanel></Border>
+              <Border Grid.Column="2" Classes="card"><StackPanel Spacing="8"><TextBlock Classes="kicker" Text="RAW BYTES" /><TextBlock Classes="metric" Text="{Binding ReceivedByteCount}" /><TextBlock Classes="muted" Text="Preserved this session" /></StackPanel></Border>
+              <Border Grid.Column="3" Classes="card"><StackPanel Spacing="8"><TextBlock Classes="kicker" Text="QUALITY" /><TextBlock Classes="metric" Text="{Binding QualityStatus}" /><TextBlock Classes="muted" Text="Transport integrity" /></StackPanel></Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="1.45*,*" ColumnSpacing="16">
+              <Border Grid.Column="0" Classes="card" Padding="27">
+                <Grid ColumnDefinitions="*,230" ColumnSpacing="28">
+                  <StackPanel Spacing="11">
+                    <TextBlock Classes="kicker" Text="HOW IT WORKS" />
+                    <TextBlock FontSize="23" FontWeight="SemiBold" Foreground="#0F172A" Text="Connect. Capture. Review." />
+                    <TextBlock Classes="muted" TextWrapping="Wrap" LineHeight="19"
+                               Text="Connect the OBD-I diagnostic cable between the car and your laptop, capture the available data, then review trouble codes, measurements, transmission data, and saved sessions." />
+                    <Button Classes="secondary" Content="Open connection  →" Command="{Binding NavigateConnectCommand}" HorizontalAlignment="Left" Margin="0,6,0,0" />
+                  </StackPanel>
+                  <Border Grid.Column="1" Background="#0F172A" CornerRadius="7" Padding="20">
+                    <StackPanel Spacing="12">
+                      <TextBlock Text="SESSION GUARANTEES" FontSize="12" FontWeight="Bold" Foreground="#94A3B8" LetterSpacing="1" />
+                      <TextBlock Text="✓  Raw bytes preserved" FontSize="14" FontWeight="Medium" Foreground="#F1F5F9" />
+                      <TextBlock Text="✓  Deterministic replay" FontSize="14" FontWeight="Medium" Foreground="#F1F5F9" />
+                      <TextBlock Text="✓  Evidence status visible" FontSize="14" FontWeight="Medium" Foreground="#F1F5F9" />
+                      <TextBlock Text="✓  Restoration attempted" FontSize="14" FontWeight="Medium" Foreground="#F1F5F9" />
+                    </StackPanel>
+                  </Border>
+                </Grid>
+              </Border>
+
+              <Border Grid.Column="1" Classes="card">
+                <StackPanel Spacing="14">
+                  <TextBlock Classes="kicker" Text="CURRENT VEHICLE" />
+                  <TextBlock Classes="sectionTitle" Text="1994 Buick Roadmaster" />
+                  <TextBlock Classes="muted" Text="5.7L LT1 · 4L60E · 8192-baud ALDL" />
+                  <Border Height="1" Background="#E4E6E1" />
+                  <Grid ColumnDefinitions="*,Auto"><TextBlock Classes="muted" Text="Definition" /><TextBlock Grid.Column="1" Text="A276 / $EE" FontSize="14" FontWeight="SemiBold" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto"><TextBlock Classes="muted" Text="Vehicle validation" /><TextBlock Grid.Column="1" Text="PENDING" FontSize="12" FontWeight="Bold" Foreground="#A16207" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto"><TextBlock Classes="muted" Text="Safety" /><TextBlock Grid.Column="1" Text="GUARDED" FontSize="12" FontWeight="Bold" Foreground="#15803D" /></Grid>
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <StackPanel Spacing="12">
+              <TextBlock Classes="sectionTitle" Text="Install on another computer" />
+              <TextBlock Classes="muted" Text="Both packages include the application runtime. You do not need to install .NET separately." />
+              <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                <Border Grid.Column="0" Classes="card" Padding="24">
+                  <StackPanel Spacing="10">
+                    <TextBlock Classes="kicker" Text="WINDOWS 10 / 11" />
+                    <TextBlock Classes="sectionTitle" Text="Windows installation" />
+                    <TextBlock Classes="muted" Text="Extract the Windows ZIP, open the extracted folder, and double-click Install.cmd." TextWrapping="Wrap" />
+                    <TextBox Text="Double-click Install.cmd" IsReadOnly="True" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="14" FontWeight="SemiBold" Background="#0F172A" Foreground="#F8FAFC" BorderThickness="0" CornerRadius="7" Padding="14,11" />
+                  </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Classes="card" Padding="24">
+                  <StackPanel Spacing="10">
+                    <TextBlock Classes="kicker" Text="LINUX X64" />
+                    <TextBlock Classes="sectionTitle" Text="Linux installation" />
+                    <TextBlock Classes="muted" Text="Open a terminal in the folder containing the downloaded archive, then run these commands." TextWrapping="Wrap" />
+                    <TextBox Text="tar -xzf 4L60-Diagnostics-linux-x64.tar.gz&#10;cd 4L60-Diagnostics-linux-x64&#10;bash install.sh" IsReadOnly="True" AcceptsReturn="True" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="14" FontWeight="SemiBold" Background="#0F172A" Foreground="#F8FAFC" BorderThickness="0" CornerRadius="7" Padding="14,11" MinHeight="92" />
+                  </StackPanel>
+                </Border>
+              </Grid>
+            </StackPanel>
+          </StackPanel>
+
+          <!-- Connect -->
+          <StackPanel IsVisible="{Binding IsConnectPage}" Spacing="24">
+            <StackPanel Spacing="7">
+              <TextBlock Classes="kicker" Text="CONNECT / 02" />
+              <TextBlock Classes="pageTitle" Text="Connect to your Roadmaster" />
+              <TextBlock Classes="muted" Text="Use the diagnostic cable plugged into your computer, or explore the app with built-in sample data." />
+            </StackPanel>
+
+            <Grid ColumnDefinitions="1.25*,*" ColumnSpacing="16">
+              <Border Grid.Column="0" Classes="card" Padding="26">
+                <StackPanel Spacing="20">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Spacing="5"><TextBlock Classes="kicker" Text="CONNECTION" /><TextBlock Classes="sectionTitle" Text="Current data source" /></StackPanel>
+                    <Border Grid.Column="1" Background="#EFF6FF" CornerRadius="12" Padding="12,7"><TextBlock Text="ROADMASTER DATA LINK" FontSize="12" FontWeight="Bold" Foreground="#1D4ED8" /></Border>
+                  </Grid>
+
+                  <Border Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="9" Padding="18">
+                    <Grid ColumnDefinitions="58,*" ColumnSpacing="16">
+                      <Border Width="58" Height="54" Background="#0F172A" CornerRadius="8"><TextBlock Text="{Binding ConnectionSourceIcon}" FontSize="13" FontWeight="Bold" Foreground="#93C5FD" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+                      <StackPanel Grid.Column="1" Spacing="6" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding DeviceSummary}" IsVisible="{Binding ShowDeviceSummary}" FontSize="15" FontWeight="SemiBold" Foreground="#0F172A" />
+                        <ComboBox ItemsSource="{Binding DiscoveredDevices}" SelectedItem="{Binding SelectedDevice}"
+                                  IsVisible="{Binding ShowDeviceSelector}" IsEnabled="{Binding CanSelectDevice}" MinWidth="260">
+                          <ComboBox.ItemTemplate><DataTemplate x:DataType="transport:TransportDevice"><TextBlock Text="{Binding DisplayName}" /></DataTemplate></ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="{Binding ConnectionSourceDescription}" FontSize="15" FontWeight="Medium" Foreground="#334155" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+
+                  <WrapPanel Orientation="Horizontal">
+                    <Button Classes="primary" Content="{Binding FindCablesButtonText}" Command="{Binding DiscoverCommand}" IsVisible="{Binding ShowConnectionActions}" Margin="0,0,9,9" />
+                    <Button Classes="secondary" Content="Connect to vehicle  →" Command="{Binding ConnectCommand}" IsVisible="{Binding ShowConnectAction}" Margin="0,0,9,9" />
+                    <Button Classes="secondary" Content="Use demo instead" Command="{Binding RunDemoCommand}" IsVisible="{Binding ShowConnectionActions}" Margin="0,0,9,9" />
+                    <Button Classes="secondary" Content="{Binding DisconnectButtonText}" Command="{Binding DisconnectCommand}" IsVisible="{Binding HasActiveTransport}" Margin="0,0,9,9" />
+                  </WrapPanel>
+
+                  <Border IsVisible="{Binding ShowConnectionActions}" Background="#EFF6FF" BorderBrush="#BFDBFE" BorderThickness="1" CornerRadius="8" Padding="15,12">
+                    <TextBlock Text="{Binding CableDiscoveryMessage}" FontSize="15" FontWeight="Medium" Foreground="#1E3A8A" TextWrapping="Wrap" />
+                  </Border>
+
+                  <Border IsVisible="{Binding IsDemoSession}" Background="#EFF6FF" BorderBrush="#93C5FD" BorderThickness="1" CornerRadius="9" Padding="18">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+                      <StackPanel Spacing="5"><TextBlock Text="Demo session is active" FontSize="16" FontWeight="SemiBold" Foreground="#1E3A8A" /><TextBlock Text="No car or cable is connected. You are viewing synthetic sample data." FontSize="15" FontWeight="Medium" Foreground="#334155" TextWrapping="Wrap" /></StackPanel>
+                      <Button Grid.Column="1" Classes="secondary" Content="View measurements  →" Command="{Binding NavigateLiveDataCommand}" VerticalAlignment="Center" />
+                    </Grid>
+                  </Border>
+
+                  <Border IsVisible="{Binding ShowVehicleConnectionHelp}" BorderBrush="#CBD5E1" BorderThickness="0,1,0,0" Padding="0,18,0,0">
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="24">
+                      <StackPanel Grid.Column="0" Spacing="9"><TextBlock Classes="sectionTitle" Text="Before you connect" /><TextBlock Classes="muted" Text="1. Turn the ignition key to ON." /><TextBlock Classes="muted" Text="2. Connect the OBD-I cable to the car and your laptop." /><TextBlock Classes="muted" Text="3. Keep the car parked while starting the session." /></StackPanel>
+                      <StackPanel Grid.Column="1" Spacing="9"><TextBlock Classes="sectionTitle" Text="What the app will do" /><TextBlock Classes="muted" Text="Save the original vehicle data automatically." /><TextBlock Classes="muted" Text="Read the documented diagnostic messages." /><TextBlock Classes="muted" Text="Never command the engine or transmission." /></StackPanel>
+                    </Grid>
+                  </Border>
+                </StackPanel>
+              </Border>
+
+              <Border Grid.Column="1" Background="#0F172A" CornerRadius="8" Padding="24">
+                <StackPanel Spacing="20">
+                  <Grid ColumnDefinitions="*,Auto"><TextBlock Text="SESSION STATUS" FontSize="15" FontWeight="Bold" Foreground="#FFFFFF" LetterSpacing="0.8" /><Border Grid.Column="1" Background="#1E293B" CornerRadius="12" Padding="11,6"><TextBlock Text="{Binding LinkBadgeStatus}" FontSize="13" FontWeight="Bold" Foreground="#BFDBFE" /></Border></Grid>
+                  <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <StackPanel Spacing="4"><TextBlock Text="MESSAGES RECEIVED" FontSize="13" Foreground="#CBD5E1" FontWeight="Bold" /><TextBlock Text="{Binding ValidProtocolFrameCount}" FontSize="36" FontWeight="SemiBold" Foreground="#FFFFFF" /></StackPanel>
+                    <StackPanel Grid.Column="1" Spacing="4"><TextBlock Text="DATA BYTES SAVED" FontSize="13" Foreground="#CBD5E1" FontWeight="Bold" /><TextBlock Text="{Binding ReceivedByteCount}" FontSize="36" FontWeight="SemiBold" Foreground="#FFFFFF" /></StackPanel>
+                  </Grid>
+                  <Border Height="1" Background="#263349" />
+                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Data source" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="{Binding DeviceSummary}" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding InterfaceStatus}" FontSize="13" FontWeight="Bold" Foreground="#60A5FA" VerticalAlignment="Center" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Connection" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Cable or built-in demo connection state" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding ConnectionDisplayStatus}" FontSize="13" FontWeight="Bold" Foreground="#86EFAC" VerticalAlignment="Center" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Data quality" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Checks for damaged or incomplete messages" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding QualityStatus}" FontSize="13" FontWeight="Bold" Foreground="#86EFAC" VerticalAlignment="Center" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Diagnostic snapshot" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Required Roadmaster messages received" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding SnapshotDisplayStatus}" FontSize="13" FontWeight="Bold" Foreground="#86EFAC" VerticalAlignment="Center" /></Grid>
+                </StackPanel>
+              </Border>
+            </Grid>
+          </StackPanel>
+
+          <!-- Trouble codes -->
+          <StackPanel IsVisible="{Binding IsTroubleCodesPage}" Spacing="22">
+            <StackPanel Spacing="7"><TextBlock Classes="kicker" Text="TROUBLE CODES / 03" /><TextBlock Classes="pageTitle" Text="Transmission trouble codes" /><TextBlock Classes="muted" Text="See what each recorded code means, what can cause it, and the first check to perform." /></StackPanel>
+            <Border Background="#FFF7E6" BorderBrush="#F1D49A" BorderThickness="1" CornerRadius="7" Padding="16">
+              <StackPanel Spacing="5"><TextBlock Text="VEHICLE VALIDATION PENDING" FontSize="13" FontWeight="Bold" Foreground="#854D0E" /><TextBlock Text="{Binding DtcKnowledgeStatus}" FontSize="14" FontWeight="Medium" Foreground="#713F12" TextWrapping="Wrap" /></StackPanel>
+            </Border>
+            <Border Classes="card" IsVisible="{Binding ShowNoTransmissionData}">
+              <StackPanel Spacing="12"><TextBlock Classes="sectionTitle" Text="No snapshot loaded" /><TextBlock Classes="muted" Text="Connect to the vehicle or use the built-in demo to populate this workspace." /><Button Classes="primary" Content="Go to connect  →" Command="{Binding NavigateConnectCommand}" HorizontalAlignment="Left" /></StackPanel>
+            </Border>
+            <Border Classes="card" IsVisible="{Binding ShowNoLoggedTransmissionDtcs}">
+              <StackPanel Spacing="8"><TextBlock Classes="kicker" Text="SNAPSHOT RESULT" /><TextBlock Classes="sectionTitle" Text="No logged transmission DTC flags" /><TextBlock Classes="muted" Text="This reports only the decoded Message 1 flag bits. It is not a verified clean bill of health." /></StackPanel>
+            </Border>
+            <ItemsControl ItemsSource="{Binding LoggedTransmissionDtcs}" IsVisible="{Binding HasLoggedTransmissionDtcs}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:DtcDisplayItem">
+                  <Border Classes="card" Margin="0,0,0,12" Padding="26">
+                    <Grid ColumnDefinitions="72,*" ColumnSpacing="20">
+                      <Border Width="62" Height="62" Background="#EFF6FF" CornerRadius="10" VerticalAlignment="Top"><TextBlock Text="{Binding Code}" FontSize="25" FontWeight="SemiBold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+                      <StackPanel Grid.Column="1" Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+                          <TextBlock Text="{Binding Title}" FontSize="20" FontWeight="SemiBold" Foreground="#0F172A" TextWrapping="Wrap" />
+                          <TextBlock Grid.Column="1" Text="{Binding EvidenceStatus}" FontSize="11" FontWeight="Bold" Foreground="#A16207" VerticalAlignment="Center" />
+                        </Grid>
+                        <TextBlock Text="{Binding PlainEnglishMeaning}" FontSize="16" FontWeight="Medium" LineHeight="24" Foreground="#1E293B" TextWrapping="Wrap" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="28">
+                          <StackPanel Grid.Column="0" Spacing="7"><TextBlock Classes="kicker" Text="POSSIBLE CAUSES — IN ORDER" /><TextBlock Text="{Binding LikelyCausesText}" FontSize="15" FontWeight="Medium" LineHeight="23" Foreground="#1E293B" TextWrapping="Wrap" /></StackPanel>
+                          <StackPanel Grid.Column="1" Spacing="7"><TextBlock Classes="kicker" Text="FIRST CHECK" /><TextBlock Text="{Binding NextTest}" FontSize="15" FontWeight="Medium" LineHeight="23" Foreground="#1E293B" TextWrapping="Wrap" /><TextBlock Classes="kicker" Text="SAFETY" Margin="0,8,0,0" /><TextBlock Text="{Binding SafetyLevel}" FontSize="15" FontWeight="SemiBold" Foreground="#7C2D12" TextWrapping="Wrap" /></StackPanel>
+                        </Grid>
+                        <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="7" Padding="14"><TextBlock Text="{Binding Limitation}" FontSize="14" FontWeight="Medium" Foreground="#475569" TextWrapping="Wrap" /></Border>
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+
+          <!-- Live data -->
+          <StackPanel IsVisible="{Binding IsLiveDataPage}" Spacing="22">
+            <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="LIVE DATA / 04" /><TextBlock Classes="pageTitle" Text="Snapshot measurements" /><TextBlock Classes="muted" Text="A focused diagnostic snapshot. Continuous charting comes after vehicle validation." /></StackPanel><Border Grid.Column="1" Background="#EFF6FF" CornerRadius="12" Padding="12,7" VerticalAlignment="Bottom"><TextBlock Text="{Binding EvidenceLabel}" FontSize="12" FontWeight="Bold" Foreground="#1D4ED8" /></Border></Grid>
+            <Border IsVisible="{Binding IsDemoSession}" Background="#EFF6FF" BorderBrush="#93C5FD" BorderThickness="1" CornerRadius="10" Padding="18,15">
+              <Grid ColumnDefinitions="Auto,*" ColumnSpacing="13">
+                <Border Width="34" Height="34" Background="#2563EB" CornerRadius="17"><TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+                <StackPanel Grid.Column="1" Spacing="3" VerticalAlignment="Center"><TextBlock Text="Demo loaded successfully" FontSize="16" FontWeight="SemiBold" Foreground="#1E3A8A" /><TextBlock Text="These are synthetic sample values. Use the sidebar to explore Trouble codes and Transmission." FontSize="15" FontWeight="Medium" Foreground="#334155" TextWrapping="Wrap" /></StackPanel>
+              </Grid>
+            </Border>
+            <Border Classes="card" IsVisible="{Binding ShowNoTransmissionData}"><StackPanel Spacing="12"><TextBlock Classes="sectionTitle" Text="No measurement snapshot" /><TextBlock Classes="muted" Text="Use the built-in demo to see this screen with clearly marked sample data." /><Button Classes="primary" Content="Open connect  →" Command="{Binding NavigateConnectCommand}" HorizontalAlignment="Left" /></StackPanel></Border>
+            <Grid IsVisible="{Binding HasTransmissionData}" ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="14" RowSpacing="14">
+              <Border Grid.Row="0" Grid.Column="0" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="ENGINE SPEED" /><TextBlock Classes="metric" Text="{Binding EngineSpeedText}" /></StackPanel></Border>
+              <Border Grid.Row="0" Grid.Column="1" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="VEHICLE SPEED" /><TextBlock Classes="metric" Text="{Binding VehicleSpeedText}" /></StackPanel></Border>
+              <Border Grid.Row="0" Grid.Column="2" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="IGNITION VOLTAGE" /><TextBlock Classes="metric" Text="{Binding IgnitionVoltageText}" /></StackPanel></Border>
+              <Border Grid.Row="0" Grid.Column="3" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="COOLANT" /><TextBlock Classes="metric" Text="{Binding CoolantTemperatureText}" /></StackPanel></Border>
+              <Border Grid.Row="1" Grid.Column="0" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="VALID FRAMES" /><TextBlock Classes="metric" Text="{Binding ValidProtocolFrameCount}" /></StackPanel></Border>
+              <Border Grid.Row="1" Grid.Column="1" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="CHECKSUM FAILURES" /><TextBlock Classes="metric" Text="{Binding ChecksumFailureCount}" /></StackPanel></Border>
+              <Border Grid.Row="1" Grid.Column="2" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="TRANSPORT" /><TextBlock Classes="metric" Text="{Binding QualityStatus}" /></StackPanel></Border>
+              <Border Grid.Row="1" Grid.Column="3" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="CAPTURE RATE" /><TextBlock Classes="metric" Text="{Binding ChunkRateText}" /><TextBlock Classes="muted" Text="chunks / second" /></StackPanel></Border>
+            </Grid>
+          </StackPanel>
+
+          <!-- Transmission -->
+          <StackPanel IsVisible="{Binding IsTransmissionPage}" Spacing="22">
+            <Grid ColumnDefinitions="*,Auto"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="TRANSMISSION / 05" /><TextBlock Classes="pageTitle" Text="4L60E snapshot" /><TextBlock Classes="muted" Text="Command states and measurements captured from A276 Message 1." /></StackPanel><Border Grid.Column="1" Background="#EFF6FF" CornerRadius="12" Padding="12,7" VerticalAlignment="Bottom"><TextBlock Text="{Binding EvidenceLabel}" FontSize="12" FontWeight="Bold" Foreground="#1D4ED8" /></Border></Grid>
+            <Border Classes="card" IsVisible="{Binding ShowNoTransmissionData}"><StackPanel Spacing="12"><TextBlock Classes="sectionTitle" Text="No transmission snapshot" /><TextBlock Classes="muted" Text="Connect the vehicle or use the built-in demo first." /><Button Classes="primary" Content="Open connect  →" Command="{Binding NavigateConnectCommand}" HorizontalAlignment="Left" /></StackPanel></Border>
+            <Grid IsVisible="{Binding HasTransmissionData}" ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="14" RowSpacing="14">
+              <Border Grid.Row="0" Grid.Column="0" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="COMMANDED GEAR" /><TextBlock Classes="metric" Text="{Binding CommandedGearText}" /></StackPanel></Border>
+              <Border Grid.Row="0" Grid.Column="1" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="FLUID TEMPERATURE" /><TextBlock Classes="metric" Text="{Binding FluidTemperatureText}" /></StackPanel></Border>
+              <Border Grid.Row="0" Grid.Column="2" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="OUTPUT SPEED" /><TextBlock Classes="metric" Text="{Binding OutputSpeedText}" /></StackPanel></Border>
+              <Border Grid.Row="1" Grid.Column="0" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="TORQUE SIGNAL PRESSURE" /><TextBlock Classes="metric" Text="{Binding TorqueSignalPressureText}" /><TextBlock Classes="muted" Text="PCM signal, not line-pressure gauge" /></StackPanel></Border>
+              <Border Grid.Row="1" Grid.Column="1" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="FORCE MOTOR CURRENT" /><TextBlock Classes="metric" Text="{Binding ForceMotorCurrentText}" /><TextBlock Classes="muted" Text="actual / reference" /></StackPanel></Border>
+              <Border Grid.Row="1" Grid.Column="2" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="FORCE MOTOR DUTY" /><TextBlock Classes="metric" Text="{Binding ForceMotorDutyText}" /></StackPanel></Border>
+              <Border Grid.Row="2" Grid.Column="0" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="SLIP SOURCE" /><TextBlock Classes="metric" Text="{Binding SlipText}" /><TextBlock Classes="muted" Text="Interpretation pending vehicle check" /></StackPanel></Border>
+              <Border Grid.Row="2" Grid.Column="1" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="TCC COMMANDS" /><TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding TccStatusText}" /><TextBlock Classes="muted" Text="Command state only" /></StackPanel></Border>
+              <Border Grid.Row="2" Grid.Column="2" Classes="card"><StackPanel Spacing="7"><TextBlock Classes="kicker" Text="SHIFT SOLENOIDS" /><TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding SolenoidStatusText}" /><TextBlock Classes="muted" Text="Command state only" /></StackPanel></Border>
+            </Grid>
+            <Border Classes="card" IsVisible="{Binding HasTransmissionData}">
+              <Grid ColumnDefinitions="*,*,*" ColumnSpacing="20"><StackPanel><TextBlock Classes="kicker" Text="LATEST 1–2 SHIFT" /><TextBlock Classes="metric" Text="{Binding OneTwoShiftTimeText}" /></StackPanel><StackPanel Grid.Column="1"><TextBlock Classes="kicker" Text="LATEST 2–3 SHIFT" /><TextBlock Classes="metric" Text="{Binding TwoThreeShiftTimeText}" /></StackPanel><StackPanel Grid.Column="2"><TextBlock Classes="kicker" Text="TRANSMISSION PROM ID" /><TextBlock Classes="metric" Text="{Binding TransmissionPromIdText}" /></StackPanel></Grid>
+            </Border>
+            <Border Classes="card" IsVisible="{Binding HasTransmissionTimeline}" Padding="0">
+              <StackPanel>
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="28" Margin="24,22,24,18">
+                  <StackPanel Spacing="5">
+                    <TextBlock Classes="sectionTitle" Text="Recorded transmission timeline" />
+                    <TextBlock Classes="muted" Text="The latest readings in time order. These are observations, not fault judgments." />
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Spacing="4"><TextBlock Classes="kicker" Text="SAMPLES" /><TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding SessionSampleCountText}" /></StackPanel>
+                  <StackPanel Grid.Column="2" Spacing="4"><TextBlock Classes="kicker" Text="DURATION" /><TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding SessionDurationText}" /></StackPanel>
+                  <StackPanel Grid.Column="3" Spacing="4"><TextBlock Classes="kicker" Text="STATE CHANGES" /><TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding SessionEventCountText}" /></StackPanel>
+                </Grid>
+                <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,1" Padding="24,12">
+                  <Grid ColumnDefinitions="0.9*,1.15*,1.15*,0.8*,1.1*">
+                    <TextBlock Classes="kicker" Text="TIME" /><TextBlock Grid.Column="1" Classes="kicker" Text="SPEED" /><TextBlock Grid.Column="2" Classes="kicker" Text="ENGINE" /><TextBlock Grid.Column="3" Classes="kicker" Text="GEAR" /><TextBlock Grid.Column="4" Classes="kicker" Text="SLIP" />
+                  </Grid>
+                </Border>
+                <ItemsControl ItemsSource="{Binding TransmissionTimeline}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:TransmissionTimelineItem">
+                      <Border Margin="24,0" Padding="0,12" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+                        <Grid ColumnDefinitions="0.9*,1.15*,1.15*,0.8*,1.1*">
+                          <TextBlock Text="{Binding ElapsedText}" FontSize="15" FontWeight="Medium" /><TextBlock Grid.Column="1" Text="{Binding VehicleSpeedText}" FontSize="15" FontWeight="Medium" /><TextBlock Grid.Column="2" Text="{Binding EngineSpeedText}" FontSize="15" FontWeight="Medium" /><TextBlock Grid.Column="3" Text="{Binding CommandedGearText}" FontSize="15" FontWeight="SemiBold" /><TextBlock Grid.Column="4" Text="{Binding SlipText}" FontSize="15" FontWeight="Medium" />
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Border Background="#FFFBEB" BorderBrush="#FDE68A" BorderThickness="0,1,0,0" Padding="24,15"><TextBlock Text="{Binding SessionInterpretationBoundary}" FontSize="14" FontWeight="Medium" Foreground="#713F12" TextWrapping="Wrap" /></Border>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <!-- Sessions -->
+          <StackPanel IsVisible="{Binding IsSessionsPage}" Spacing="22">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="kicker" Text="SAVED SESSIONS / 06" />
+                <TextBlock Classes="pageTitle" Text="Review a previous session" />
+                <TextBlock Classes="muted" Text="Select a capture and replay it. The app reads the saved data only; it does not connect to or control the car." TextWrapping="Wrap" />
+              </StackPanel>
+              <Button Grid.Column="1" Classes="secondary" Content="Open another file" Command="{Binding BrowseSessionCommand}" VerticalAlignment="Bottom" />
+            </Grid>
+
+            <Grid ColumnDefinitions="1.15*,0.85*" ColumnSpacing="18">
+              <Border Grid.Column="0" Classes="card" Padding="0">
+                <Grid RowDefinitions="Auto,*">
+                  <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="24,20,24,14">
+                    <StackPanel Spacing="4">
+                      <TextBlock Classes="sectionTitle" Text="Sessions on this computer" />
+                      <TextBlock Classes="muted" Text="{Binding SessionLibraryStatus}" />
+                    </StackPanel>
+                    <Button Grid.Column="1" Classes="secondary" Content="Refresh" Command="{Binding RefreshSessionsCommand}" MinWidth="96" />
+                  </Grid>
+
+                  <Border Grid.Row="1" IsVisible="{Binding ShowNoSavedSessions}" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="24,28">
+                    <StackPanel Spacing="8">
+                      <TextBlock FontSize="17" FontWeight="SemiBold" Text="No saved sessions yet" />
+                      <TextBlock Classes="muted" Text="Capture data from the Roadmaster, run the built-in demo, or open a .lt1raw file from another location." TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Border>
+
+                  <ListBox Grid.Row="1"
+                           IsVisible="{Binding HasSavedSessions}"
+                           ItemsSource="{Binding SavedSessions}"
+                           SelectedItem="{Binding SelectedSavedSession}"
+                           Background="Transparent"
+                           BorderBrush="#E2E8F0"
+                           BorderThickness="0,1,0,0"
+                           Padding="10">
+                    <ListBox.ItemTemplate>
+                      <DataTemplate x:DataType="vm:SavedSessionItem">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18" Margin="10,9">
+                          <StackPanel Spacing="5">
+                            <TextBlock Text="{Binding FileName}" FontSize="15" FontWeight="SemiBold" Foreground="#0F172A" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding CapturedText}" FontSize="14" FontWeight="Medium" Foreground="#475569" />
+                          </StackPanel>
+                          <TextBlock Grid.Column="1" Text="{Binding SizeText}" FontSize="14" FontWeight="SemiBold" Foreground="#475569" VerticalAlignment="Center" />
+                        </Grid>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </Grid>
+              </Border>
+
+              <Border Grid.Column="1" Classes="card" Padding="26">
+                <StackPanel Spacing="18">
+                  <StackPanel Spacing="7">
+                    <TextBlock Classes="kicker" Text="REPLAY" />
+                    <TextBlock Classes="sectionTitle" Text="{Binding ReplayStatus}" />
+                    <TextBlock Classes="muted" Text="{Binding ReplayDetail}" TextWrapping="Wrap" />
+                  </StackPanel>
+                  <StackPanel Spacing="10">
+                    <Button Classes="primary" Content="Replay selected session  →" Command="{Binding ReplaySelectedSessionCommand}" HorizontalAlignment="Stretch" />
+                    <Button Classes="secondary" Content="Show selected file" Command="{Binding OpenSessionFolderCommand}" HorizontalAlignment="Stretch" />
+                  </StackPanel>
+                  <Border IsVisible="{Binding HasReplayResult}" BorderBrush="#CBD5E1" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                      <StackPanel Grid.Column="0" Spacing="4"><TextBlock Classes="kicker" Text="RAW BYTES" /><TextBlock FontSize="21" FontWeight="SemiBold" Text="{Binding ReceivedByteCount}" /></StackPanel>
+                      <StackPanel Grid.Column="1" Spacing="4"><TextBlock Classes="kicker" Text="CHUNKS" /><TextBlock FontSize="21" FontWeight="SemiBold" Text="{Binding ReceivedChunkCount}" /></StackPanel>
+                      <StackPanel Grid.Column="2" Spacing="4"><TextBlock Classes="kicker" Text="INTEGRITY" /><TextBlock FontSize="21" FontWeight="SemiBold" Text="{Binding QualityStatus}" /></StackPanel>
+                    </Grid>
+                  </Border>
+                </StackPanel>
+              </Border>
+            </Grid>
+          </StackPanel>
+
+          <!-- Reports -->
+          <StackPanel IsVisible="{Binding IsReportsPage}" Spacing="22">
+            <StackPanel Spacing="7"><TextBlock Classes="kicker" Text="REPORTS / 07" /><TextBlock Classes="pageTitle" Text="Save and share your results" /><TextBlock Classes="muted" Text="Create a readable report or export the decoded timeline for a spreadsheet." /></StackPanel>
+            <Border Background="#FFFBEB" BorderBrush="#FDE68A" BorderThickness="1" CornerRadius="8" Padding="18">
+              <StackPanel Spacing="5"><TextBlock Text="VEHICLE VALIDATION PENDING" FontSize="13" FontWeight="Bold" Foreground="#854D0E" /><TextBlock Text="Reports include recorded facts and source-backed code explanations. They do not call a value normal or abnormal until a matching baseline is verified." FontSize="15" FontWeight="Medium" Foreground="#713F12" TextWrapping="Wrap" /></StackPanel>
+            </Border>
+            <Border Classes="card" IsVisible="{Binding ShowNoTransmissionData}" Padding="28">
+              <StackPanel Spacing="12"><TextBlock Classes="sectionTitle" Text="Load measurements first" /><TextBlock Classes="muted" Text="Run the demo, connect to the Roadmaster, or replay a saved session before creating a report." /><Button Classes="primary" Content="Open saved sessions" Command="{Binding NavigateSessionsCommand}" HorizontalAlignment="Left" /></StackPanel>
+            </Border>
+            <Border Classes="card" IsVisible="{Binding HasTransmissionData}" Padding="28">
+              <Grid ColumnDefinitions="*,*" ColumnSpacing="18">
+                <Border Grid.Column="0" Background="#EFF6FF" BorderBrush="#BFDBFE" BorderThickness="1" CornerRadius="9" Padding="22">
+                  <StackPanel Spacing="10"><TextBlock Classes="kicker" Text="READABLE REPORT" /><TextBlock Classes="sectionTitle" Text="Diagnostic report" /><TextBlock Text="A clean web page with session quality, trouble-code explanations, and the recorded transmission timeline. Open it in any browser and print it to PDF if desired." FontSize="15" FontWeight="Medium" Foreground="#334155" TextWrapping="Wrap" LineHeight="22" /><Button Classes="primary" Content="Save diagnostic report" Command="{Binding ExportReportCommand}" HorizontalAlignment="Left" Margin="0,6,0,0" /></StackPanel>
+                </Border>
+                <Border Grid.Column="1" Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="9" Padding="22">
+                  <StackPanel Spacing="10"><TextBlock Classes="kicker" Text="SPREADSHEET DATA" /><TextBlock Classes="sectionTitle" Text="Measurement export" /><TextBlock Text="A CSV file containing every decoded sample with time, speed, RPM, commanded gear, slip, temperature, voltage, current, and command states." FontSize="15" FontWeight="Medium" Foreground="#334155" TextWrapping="Wrap" LineHeight="22" /><Button Classes="secondary" Content="Export measurements" Command="{Binding ExportCsvCommand}" HorizontalAlignment="Left" Margin="0,6,0,0" /></StackPanel>
+                </Border>
+              </Grid>
+            </Border>
+            <Border Classes="card" Padding="20">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16"><TextBlock Text="{Binding ReportStatus}" FontSize="15" FontWeight="Medium" Foreground="#334155" VerticalAlignment="Center" TextWrapping="Wrap" /><Button Grid.Column="1" Classes="secondary" Content="Show saved file" Command="{Binding OpenReportFolderCommand}" /></Grid>
+            </Border>
+          </StackPanel>
+        </Grid>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</Window>

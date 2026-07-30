@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lt1diagnostics.local/schemas/dtc.schema.json",
+  "title": "LT1Diagnostics DTC definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "definitionVersion", "verificationStatus", "productionEligible", "definitionId", "code", "codeFormat", "system", "title", "plainEnglishMeaning", "enableCriteria", "failureCriteria", "maturityCriteria", "pcmFallbackAction", "driverSymptoms", "likelyCauses", "falsePositiveConditions", "confirmatoryTests", "safetyLevel", "sourceReferences"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "verificationStatus": { "enum": ["Unverified", "Verified", "Superseded"] },
+    "productionEligible": { "type": "boolean" },
+    "definitionId": { "type": "string", "minLength": 1 },
+    "code": { "type": ["string", "null"] },
+    "codeFormat": { "type": ["string", "null"] },
+    "system": { "type": ["string", "null"] },
+    "title": { "type": "string", "minLength": 1 },
+    "plainEnglishMeaning": { "type": ["string", "null"] },
+    "enableCriteria": { "type": ["string", "null"] },
+    "failureCriteria": { "type": ["string", "null"] },
+    "maturityCriteria": { "type": ["string", "null"] },
+    "pcmFallbackAction": { "type": "array", "items": { "type": "string" } },
+    "driverSymptoms": { "type": "array", "items": { "type": "string" } },
+    "likelyCauses": { "type": "array", "items": { "type": "object" } },
+    "falsePositiveConditions": { "type": "array", "items": { "type": "string" } },
+    "confirmatoryTests": { "type": "array", "items": { "type": "string" } },
+    "safetyLevel": { "type": ["string", "null"] },
+    "sourceReferences": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [{ "if": { "properties": { "verificationStatus": { "const": "Unverified" } } }, "then": { "properties": { "productionEligible": { "const": false } } } }]
+}

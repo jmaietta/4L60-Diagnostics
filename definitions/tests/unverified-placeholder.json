@@ -1,0 +1,23 @@
+{
+  "$schema": "../schemas/test.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.1.0-unverified",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "testId": "unverified-placeholder",
+  "displayName": "UNVERIFIED PLACEHOLDER — no diagnostic test",
+  "enabled": false,
+  "preconditions": [],
+  "operatorInstructions": [],
+  "requiredSignals": [],
+  "startTrigger": null,
+  "stopTrigger": null,
+  "invalidatingConditions": [],
+  "metrics": [],
+  "baselineSelector": null,
+  "dtcSnapshotPoints": [],
+  "safetyConstraints": [],
+  "commentaryRules": [],
+  "sourceReferences": []
+}
+

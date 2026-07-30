@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lt1diagnostics.local/schemas/protocol.schema.json",
+  "title": "LT1Diagnostics ALDL protocol definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "definitionVersion", "verificationStatus", "productionEligible", "definitionId", "application", "deviceAddress", "baudRate", "dataPin", "encodedLengthBias", "checksum", "mode1Datasets", "controlModes", "signals", "sourceReferences"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "verificationStatus": { "enum": ["Unverified", "Verified", "Superseded"] },
+    "productionEligible": { "type": "boolean" },
+    "definitionId": { "type": "string", "minLength": 1 },
+    "application": { "type": "string", "minLength": 1 },
+    "deviceAddress": { "type": "integer", "minimum": 0, "maximum": 255 },
+    "baudRate": { "type": "integer", "minimum": 1 },
+    "dataPin": { "type": "string", "minLength": 1 },
+    "encodedLengthBias": { "type": "integer", "minimum": 0, "maximum": 255 },
+    "checksum": { "type": "string", "minLength": 1 },
+    "mode1Datasets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["datasetId", "requestLengthByte", "responseLengthByte", "dataByteCount", "sourceReference"],
+        "properties": {
+          "datasetId": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "requestLengthByte": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "responseLengthByte": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "dataByteCount": { "type": "integer", "minimum": 0 },
+          "sourceReference": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "controlModes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["mode", "name", "requestLengthByte", "sourceReference"],
+        "properties": {
+          "mode": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "name": { "type": "string", "minLength": 1 },
+          "requestLengthByte": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "sourceReference": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["signalId", "datasetId", "dataByteOffset", "dataType", "scale", "offset", "unit", "sourceReference"],
+        "properties": {
+          "signalId": { "type": "string", "minLength": 1 },
+          "datasetId": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "dataByteOffset": { "type": "integer", "minimum": 0 },
+          "dataType": { "enum": ["uint8", "uint16be", "int16be", "bitfield"] },
+          "scale": { "type": "number" },
+          "offset": { "type": "number" },
+          "unit": { "type": ["string", "null"] },
+          "sourceReference": { "type": "string", "minLength": 1 },
+          "bits": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["bit", "name", "code"],
+              "properties": {
+                "bit": { "type": "integer", "minimum": 0, "maximum": 7 },
+                "name": { "type": "string", "minLength": 1 },
+                "code": { "type": ["integer", "null"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceReferences": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "verificationStatus": { "const": "Unverified" } } },
+      "then": { "properties": { "productionEligible": { "const": false } } }
+    }
+  ]
+}

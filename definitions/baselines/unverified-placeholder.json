@@ -1,0 +1,18 @@
+{
+  "$schema": "../schemas/baseline.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.1.0-unverified",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "baselineId": "unverified-placeholder",
+  "baselineType": null,
+  "metricId": null,
+  "dimensions": {},
+  "expectedLow": null,
+  "expectedHigh": null,
+  "expectedNominal": null,
+  "unit": null,
+  "minimumSampleCount": null,
+  "sourceReferences": []
+}
+

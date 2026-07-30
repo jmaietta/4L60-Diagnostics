@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lt1diagnostics.local/schemas/commentary.schema.json",
+  "title": "LT1Diagnostics deterministic commentary definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "definitionVersion", "verificationStatus", "productionEligible", "commentaryId", "enabled", "appliesTo", "template", "causeRules", "nextTestRules", "limitations", "sourceReferences"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "verificationStatus": { "enum": ["Unverified", "Verified", "Superseded"] },
+    "productionEligible": { "type": "boolean" },
+    "commentaryId": { "type": "string", "minLength": 1 },
+    "enabled": { "type": "boolean" },
+    "appliesTo": { "type": ["string", "null"] },
+    "template": { "type": ["string", "null"] },
+    "causeRules": { "type": "array" },
+    "nextTestRules": { "type": "array" },
+    "limitations": { "type": "array" },
+    "sourceReferences": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [{ "if": { "properties": { "verificationStatus": { "const": "Unverified" } } }, "then": { "properties": { "productionEligible": { "const": false }, "enabled": { "const": false } } } }]
+}

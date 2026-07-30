@@ -1,0 +1,34 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-58",
+  "code": "58",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission",
+  "title": "Transmission temperature signal indicates extreme heat",
+  "plainEnglishMeaning": "The PCM received a transmission-temperature signal representing extreme heat. Actual overheating and an electrical or sensor fault must be separated by testing.",
+  "enableCriteria": "The reproduced Roadmaster chart states 148 °C or higher for five seconds.",
+  "failureCriteria": "Transmission-fluid-temperature input remains at the extreme-hot end of its range.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": ["Illuminate the malfunction indicator and substitute a 90 °C transmission-temperature value."],
+  "driverSymptoms": ["Shift timing or torque-converter-clutch operation may be affected by the substituted temperature value."],
+  "likelyCauses": [
+    { "rank": 1, "category": "Wiring", "cause": "Temperature-signal circuit shorted to ground" },
+    { "rank": 2, "category": "Component", "cause": "Transmission temperature sensor out of calibration" },
+    { "rank": 3, "category": "Mechanical", "cause": "Transmission fluid is genuinely overheated" }
+  ],
+  "falsePositiveConditions": ["A grounded signal wire can look like extreme fluid temperature."],
+  "confirmatoryTests": [
+    "Compare the scan value with the transmission's actual temperature.",
+    "Inspect the signal circuit for a short to ground.",
+    "Check sensor resistance against the applicable temperature-to-resistance table."
+  ],
+  "safetyLevel": "Stop and investigate if actual overheating is confirmed",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 58 section, lines 951-964",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

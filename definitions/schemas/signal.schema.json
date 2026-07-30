@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lt1diagnostics.local/schemas/signal.schema.json",
+  "title": "LT1Diagnostics signal definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "definitionVersion", "verificationStatus", "productionEligible", "signalId", "displayName", "messageId", "byteOffset", "bitDefinition", "scalingFormula", "unit", "sourceReferences"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "verificationStatus": { "enum": ["Unverified", "Verified", "Superseded"] },
+    "productionEligible": { "type": "boolean" },
+    "signalId": { "type": "string", "minLength": 1 },
+    "displayName": { "type": "string", "minLength": 1 },
+    "messageId": { "type": ["integer", "null"], "minimum": 0, "maximum": 255 },
+    "byteOffset": { "type": ["integer", "null"], "minimum": 0 },
+    "bitDefinition": { "type": ["string", "null"] },
+    "scalingFormula": { "type": ["string", "null"] },
+    "unit": { "type": ["string", "null"] },
+    "sourceReferences": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [{ "if": { "properties": { "verificationStatus": { "const": "Unverified" } } }, "then": { "properties": { "productionEligible": { "const": false } } } }]
+}

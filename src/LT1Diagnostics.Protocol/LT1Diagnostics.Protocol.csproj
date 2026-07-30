@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\LT1Diagnostics.Domain\LT1Diagnostics.Domain.csproj" />
+  </ItemGroup>
+</Project>
+

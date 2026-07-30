@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-90",
+  "code": "90",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission electrical",
+  "title": "Torque-converter-clutch solenoid circuit fault",
+  "plainEnglishMeaning": "The PCM detected an electrical problem in the circuit controlling the torque-converter-clutch solenoid.",
+  "enableCriteria": null,
+  "failureCriteria": "Exact application-specific electrical feedback criteria are not yet verified.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": [],
+  "driverSymptoms": [],
+  "likelyCauses": [
+    { "rank": 1, "category": "Connection", "cause": "Poor contact at the transmission pass-through connector" },
+    { "rank": 2, "category": "Power supply", "cause": "Open ignition-feed circuit" },
+    { "rank": 3, "category": "Wiring", "cause": "Shorted or open internal transmission harness" },
+    { "rank": 4, "category": "Component", "cause": "TCC solenoid electrical fault" }
+  ],
+  "falsePositiveConditions": ["A shared ignition-feed fault can set multiple transmission electrical codes."],
+  "confirmatoryTests": [
+    "Check for other codes that share the transmission ignition feed.",
+    "Verify power at the TCC solenoid circuit.",
+    "Test the internal harness and TCC solenoid for an open or short."
+  ],
+  "safetyLevel": "Service soon",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 90 section, lines 1434-1442",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

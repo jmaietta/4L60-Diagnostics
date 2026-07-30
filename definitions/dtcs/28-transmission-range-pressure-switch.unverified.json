@@ -1,0 +1,34 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-28",
+  "code": "28",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission",
+  "title": "Transmission range pressure switch signal fault",
+  "plainEnglishMeaning": "The PCM detected a combination of transmission range-pressure-switch signals that should not occur during normal operation.",
+  "enableCriteria": "Ignition on; the reproduced Roadmaster chart states that range signals A and C both indicate zero volts for two seconds.",
+  "failureCriteria": "An illegal combination of range-pressure-switch inputs is detected.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": [],
+  "driverSymptoms": [],
+  "likelyCauses": [
+    { "rank": 1, "category": "Connection", "cause": "Poor contact at a transmission or PCM connector" },
+    { "rank": 2, "category": "Wiring", "cause": "A range-signal circuit shorted to ground" },
+    { "rank": 3, "category": "Component", "cause": "An internal fault in the range pressure switch assembly" }
+  ],
+  "falsePositiveConditions": ["A connector fault can imitate a failed switch assembly."],
+  "confirmatoryTests": [
+    "Compare the reported range with the selector position.",
+    "Check the PCM-supplied voltage at the transmission connector.",
+    "Check each range-signal circuit for an unwanted path to ground."
+  ],
+  "safetyLevel": "Service soon",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 28 section, lines 540-550",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

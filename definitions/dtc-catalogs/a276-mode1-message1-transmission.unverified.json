@@ -1,0 +1,41 @@
+{
+  "$schema": "../schemas/dtc-catalog.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "catalogId": "a276-mode1-message1-logged-transmission-dtcs",
+  "datasetId": 1,
+  "statusKind": "Logged",
+  "entries": [
+    { "code": 24, "sourceTitle": "OUTPUT SPEED LOW", "dataByteOffset": 0, "bit": 7, "sourceReference": "A276.DS: Mode 1 Message 1 word 1 bit 7" },
+    { "code": 76, "sourceTitle": "LONG SYSTEM VOLTAGE HIGH", "dataByteOffset": 2, "bit": 0, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 0" },
+    { "code": 75, "sourceTitle": "SYSTEM VOLTAGE LOW", "dataByteOffset": 2, "bit": 1, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 1" },
+    { "code": 74, "sourceTitle": "ASR ACTIVE FAULT", "dataByteOffset": 2, "bit": 2, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 2" },
+    { "code": 73, "sourceTitle": "FORCE MOTOR CURRENT", "dataByteOffset": 2, "bit": 3, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 3" },
+    { "code": 72, "sourceTitle": "OUTPUT SPEED LOSS", "dataByteOffset": 2, "bit": 4, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 4" },
+    { "code": 59, "sourceTitle": "TRANSMISSION TEMPERATURE LOW", "dataByteOffset": 2, "bit": 5, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 5" },
+    { "code": 58, "sourceTitle": "TRANSMISSION TEMPERATURE HIGH", "dataByteOffset": 2, "bit": 6, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 6" },
+    { "code": 28, "sourceTitle": "PRESSURE SWITCH MANIFOLD", "dataByteOffset": 2, "bit": 7, "sourceReference": "A276.DS: Mode 1 Message 1 word 3 bit 7" },
+    { "code": 86, "sourceTitle": "LOW RATIO", "dataByteOffset": 3, "bit": 0, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 0" },
+    { "code": 85, "sourceTitle": "TCC STUCK ON", "dataByteOffset": 3, "bit": 1, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 1" },
+    { "code": 84, "sourceTitle": "3-2 DOWNSHIFT FEEDBACK FAULT (ODM)", "dataByteOffset": 3, "bit": 2, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 2" },
+    { "code": 83, "sourceTitle": "TCC CONTROL FEEDBACK FAULT (ODM)", "dataByteOffset": 3, "bit": 3, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 3" },
+    { "code": 82, "sourceTitle": "SHIFT A SOLENOID FAULT (ODM)", "dataByteOffset": 3, "bit": 4, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 4" },
+    { "code": 81, "sourceTitle": "SHIFT B SOLENOID FAULT (ODM)", "dataByteOffset": 3, "bit": 5, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 5" },
+    { "code": 80, "sourceTitle": "TRANSMISSION COMPONENT SLIPPING", "dataByteOffset": 3, "bit": 6, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 6" },
+    { "code": 79, "sourceTitle": "TRANSMISSION OVER TEMPERATURE", "dataByteOffset": 3, "bit": 7, "sourceReference": "A276.DS: Mode 1 Message 1 word 4 bit 7" },
+    { "code": 94, "sourceTitle": "TRANS MANUAL LIGHT FAULT (ODM)", "dataByteOffset": 4, "bit": 0, "sourceReference": "A276.DS: Mode 1 Message 1 word 5 bit 0" },
+    { "code": 93, "sourceTitle": "SERVICE VEH. SOON LIGHT FAULT (ODM)", "dataByteOffset": 4, "bit": 1, "sourceReference": "A276.DS: Mode 1 Message 1 word 5 bit 1" },
+    { "code": 92, "sourceTitle": "TRANS PERF LIGHT FAULT (ODM)", "dataByteOffset": 4, "bit": 2, "sourceReference": "A276.DS: Mode 1 Message 1 word 5 bit 2" },
+    { "code": 91, "sourceTitle": "1-4, 2-5 SHIFT LIGHT FAULT (ODM)", "dataByteOffset": 4, "bit": 3, "sourceReference": "A276.DS: Mode 1 Message 1 word 5 bit 3" },
+    { "code": 90, "sourceTitle": "TCC ENABLE FAULT (ODM)", "dataByteOffset": 4, "bit": 4, "sourceReference": "A276.DS: Mode 1 Message 1 word 5 bit 4" },
+    { "code": 89, "sourceTitle": "MAX ADAPT AND LONG SHIFT", "dataByteOffset": 4, "bit": 5, "sourceReference": "A276.DS: Mode 1 Message 1 word 5 bit 5" },
+    { "code": 87, "sourceTitle": "HIGH RATIO", "dataByteOffset": 4, "bit": 7, "sourceReference": "A276.DS: Mode 1 Message 1 word 5 bit 7" }
+  ],
+  "sourceReferences": [
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS",
+    "GM-FSM-1994-ROADMASTER criteria and applicability cross-check pending",
+    "Target Roadmaster/reference-tool comparison pending"
+  ]
+}

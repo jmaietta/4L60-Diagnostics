@@ -1,0 +1,18 @@
+[Bb]in/
+[Oo]bj/
+.vs/
+.vscode/
+.idea/
+.dotnet/
+.nuget/
+artifacts/
+TestResults/
+*.user
+*.suo
+*.log
+references/*
+!references/README.md
+!references/.gitignore
+testdata/recorded/*
+!testdata/recorded/.gitkeep
+/4l60e English.pdf

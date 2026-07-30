@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/signal.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.1.0-unverified",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "signalId": "unverified-placeholder",
+  "displayName": "UNVERIFIED PLACEHOLDER — no signal definition",
+  "messageId": null,
+  "byteOffset": null,
+  "bitDefinition": null,
+  "scalingFormula": null,
+  "unit": null,
+  "sourceReferences": []
+}
+

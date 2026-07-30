@@ -1,0 +1,34 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-59",
+  "code": "59",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission",
+  "title": "Transmission temperature signal indicates extreme cold",
+  "plainEnglishMeaning": "The PCM received a transmission-temperature signal below the sensor's plausible operating range, commonly indicating an open circuit or connection problem.",
+  "enableCriteria": "The reproduced Roadmaster chart states below -40 °C for five seconds.",
+  "failureCriteria": "Transmission-fluid-temperature input remains at the extreme-cold end of its range.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": ["Do not illuminate the malfunction indicator; substitute a 90 °C transmission-temperature value."],
+  "driverSymptoms": ["Shift timing or torque-converter-clutch operation may be affected by the substituted temperature value."],
+  "likelyCauses": [
+    { "rank": 1, "category": "Connection", "cause": "Open or intermittent temperature-sensor connection" },
+    { "rank": 2, "category": "Wiring", "cause": "Open signal or sensor-ground circuit" },
+    { "rank": 3, "category": "Component", "cause": "Transmission temperature sensor out of calibration" }
+  ],
+  "falsePositiveConditions": ["A disconnected sensor produces a signal similar to impossible cold temperature."],
+  "confirmatoryTests": [
+    "Confirm that the sensor connector has the PCM reference voltage.",
+    "Check the signal and ground circuits for an open connection.",
+    "Compare sensor resistance with the applicable temperature-to-resistance table."
+  ],
+  "safetyLevel": "Service soon",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 59 section, lines 987-1000",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

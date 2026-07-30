@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>4L60-Diagnostics</AssemblyName>
+    <Product>4L60 Diagnostics</Product>
+    <Title>4L60 Diagnostics</Title>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LT1Diagnostics.Acquisition\LT1Diagnostics.Acquisition.csproj" />
+    <ProjectReference Include="..\LT1Diagnostics.Analysis\LT1Diagnostics.Analysis.csproj" />
+    <ProjectReference Include="..\LT1Diagnostics.Domain\LT1Diagnostics.Domain.csproj" />
+    <ProjectReference Include="..\LT1Diagnostics.Knowledge\LT1Diagnostics.Knowledge.csproj" />
+    <ProjectReference Include="..\LT1Diagnostics.Reporting\LT1Diagnostics.Reporting.csproj" />
+    <ProjectReference Include="..\LT1Diagnostics.Simulator\LT1Diagnostics.Simulator.csproj" />
+    <ProjectReference Include="..\LT1Diagnostics.Transport\LT1Diagnostics.Transport.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\definitions\**\*.json" Link="definitions\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

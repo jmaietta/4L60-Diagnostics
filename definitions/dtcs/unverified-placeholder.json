@@ -1,0 +1,24 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.1.0-unverified",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "unverified-placeholder",
+  "code": null,
+  "codeFormat": null,
+  "system": null,
+  "title": "UNVERIFIED PLACEHOLDER — no DTC definition",
+  "plainEnglishMeaning": null,
+  "enableCriteria": null,
+  "failureCriteria": null,
+  "maturityCriteria": null,
+  "pcmFallbackAction": [],
+  "driverSymptoms": [],
+  "likelyCauses": [],
+  "falsePositiveConditions": [],
+  "confirmatoryTests": [],
+  "safetyLevel": null,
+  "sourceReferences": []
+}
+

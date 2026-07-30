@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-73",
+  "code": "73",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission",
+  "title": "Pressure-control-solenoid current fault",
+  "plainEnglishMeaning": "The PCM recorded an electrical current-control problem involving the solenoid used to regulate transmission line pressure.",
+  "enableCriteria": null,
+  "failureCriteria": "Exact application-specific current-error criteria are not yet verified.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": [],
+  "driverSymptoms": [],
+  "likelyCauses": [
+    { "rank": 1, "category": "Connection", "cause": "Poor contact at the PCM or transmission connector" },
+    { "rank": 2, "category": "Wiring", "cause": "Open, shorted, or high-resistance pressure-control-solenoid circuit" },
+    { "rank": 3, "category": "Component", "cause": "Pressure-control solenoid electrical fault" },
+    { "rank": 4, "category": "Controller", "cause": "PCM driver fault after the circuit and solenoid test correctly" }
+  ],
+  "falsePositiveConditions": ["Connector resistance can produce a current error without proving the solenoid is mechanically defective."],
+  "confirmatoryTests": [
+    "Compare commanded and reported pressure-control-solenoid current.",
+    "Check power, ground control, resistance, and connector condition under load.",
+    "Measure actual hydraulic line pressure separately if shift behavior is abnormal."
+  ],
+  "safetyLevel": "Service soon; avoid diagnosis from this code alone",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 73 section, lines 1242-1251",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

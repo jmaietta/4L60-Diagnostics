@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lt1diagnostics.local/schemas/vehicle.schema.json",
+  "title": "LT1Diagnostics vehicle profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "definitionVersion", "verificationStatus", "productionEligible", "profileId", "manufacturer", "year", "model", "body", "engine", "transmission", "pcmFamily", "calibrationIds", "aldlDeviceAddress", "busStrategy", "axleRatioOptions", "defaultAxleRatio", "tireSpecification", "transmissionGearRatios", "supportedSignals", "supportedTests", "sourceReferences"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "verificationStatus": { "enum": ["Unverified", "Verified", "Superseded"] },
+    "productionEligible": { "type": "boolean" },
+    "profileId": { "type": "string", "minLength": 1 },
+    "manufacturer": { "type": "string", "minLength": 1 },
+    "year": { "type": "integer", "minimum": 1900 },
+    "model": { "type": "string", "minLength": 1 },
+    "body": { "type": ["string", "null"] },
+    "engine": { "type": "string", "minLength": 1 },
+    "transmission": { "type": "string", "minLength": 1 },
+    "pcmFamily": { "type": ["string", "null"] },
+    "calibrationIds": { "type": "array", "items": { "type": "string" } },
+    "aldlDeviceAddress": { "type": ["integer", "null"], "minimum": 0, "maximum": 255 },
+    "busStrategy": { "type": ["string", "null"] },
+    "axleRatioOptions": { "type": "array", "items": { "type": "number", "exclusiveMinimum": 0 } },
+    "defaultAxleRatio": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+    "tireSpecification": { "type": ["string", "null"] },
+    "transmissionGearRatios": { "type": "object" },
+    "supportedSignals": { "type": "array", "items": { "type": "string" } },
+    "supportedTests": { "type": "array", "items": { "type": "string" } },
+    "sourceReferences": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "verificationStatus": { "const": "Unverified" } } },
+      "then": { "properties": { "productionEligible": { "const": false } } }
+    }
+  ]
+}

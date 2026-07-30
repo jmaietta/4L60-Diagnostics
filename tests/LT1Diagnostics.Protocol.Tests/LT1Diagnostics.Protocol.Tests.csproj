@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LT1Diagnostics.Protocol\LT1Diagnostics.Protocol.csproj" />
+  </ItemGroup>
+</Project>

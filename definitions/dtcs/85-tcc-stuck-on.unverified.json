@@ -1,0 +1,34 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-85",
+  "code": "85",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission",
+  "title": "Torque-converter clutch stuck on",
+  "plainEnglishMeaning": "The PCM detected behavior consistent with the torque-converter clutch remaining applied after it was commanded off.",
+  "enableCriteria": "Torque-converter clutch commanded off.",
+  "failureCriteria": "The reproduced chart expects clutch slip speed to increase after the off command; exact timing and slip limits are not yet verified.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": [],
+  "driverSymptoms": ["The engine may stall as the vehicle stops if the clutch remains mechanically applied."],
+  "likelyCauses": [
+    { "rank": 1, "category": "Hydraulic", "cause": "Torque-converter clutch apply circuit remains pressurized" },
+    { "rank": 2, "category": "Mechanical", "cause": "Torque-converter clutch is mechanically stuck" },
+    { "rank": 3, "category": "Control", "cause": "TCC solenoid or valve does not release correctly" }
+  ],
+  "falsePositiveConditions": ["A speed-signal error can make calculated clutch slip misleading."],
+  "confirmatoryTests": [
+    "Confirm that the PCM commands the clutch off.",
+    "Observe whether engine-to-transmission slip increases after the off command.",
+    "Check the TCC electrical and hydraulic release circuits."
+  ],
+  "safetyLevel": "Use caution; a truly stuck clutch can stall the engine when stopping",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 85 section, lines 1419-1426",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

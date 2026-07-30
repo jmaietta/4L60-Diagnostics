@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/commentary.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.1.0-unverified",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "commentaryId": "unverified-placeholder",
+  "enabled": false,
+  "appliesTo": null,
+  "template": null,
+  "causeRules": [],
+  "nextTestRules": [],
+  "limitations": [],
+  "sourceReferences": []
+}
+

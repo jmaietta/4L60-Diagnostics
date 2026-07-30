@@ -1,0 +1,18 @@
+{
+  "fixtureVersion": "1.0.0",
+  "evidenceStatus": "DocumentaryOnlyVehicleCapturePending",
+  "sourceReferences": [
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS",
+    "ECMHACK-ALDL-COMMS-2026-07-30"
+  ],
+  "vectors": [
+    { "name": "mode-1-message-0-request", "kind": "Mode1", "datasetId": 0, "hex": "F4570100B4" },
+    { "name": "mode-1-message-1-request", "kind": "Mode1", "datasetId": 1, "hex": "F4570101B3" },
+    { "name": "mode-1-message-2-request", "kind": "Mode1", "datasetId": 2, "hex": "F4570102B2" },
+    { "name": "mode-1-message-4-request", "kind": "Mode1", "datasetId": 4, "hex": "F4570104B0" },
+    { "name": "mode-1-message-6-request", "kind": "Mode1", "datasetId": 6, "hex": "F4570106AE" },
+    { "name": "mode-0-return-normal", "kind": "Control", "mode": 0, "hex": "F45600B6" },
+    { "name": "mode-8-disable-normal-communications", "kind": "Control", "mode": 8, "hex": "F45608AE" },
+    { "name": "mode-9-enable-normal-communications", "kind": "Control", "mode": 9, "hex": "F45609AD" }
+  ]
+}

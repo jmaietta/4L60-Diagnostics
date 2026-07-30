@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-79",
+  "code": "79",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission",
+  "title": "Transmission fluid overtemperature",
+  "plainEnglishMeaning": "The PCM recorded a transmission-fluid overtemperature condition. The temperature must be confirmed because a biased sensor or grounded circuit can imitate overheating.",
+  "enableCriteria": null,
+  "failureCriteria": "The exact application-specific temperature and duration criteria are not yet verified.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": [],
+  "driverSymptoms": [],
+  "likelyCauses": [
+    { "rank": 1, "category": "Mechanical", "cause": "Transmission fluid is genuinely overheating" },
+    { "rank": 2, "category": "Maintenance", "cause": "Incorrect or low transmission-fluid level" },
+    { "rank": 3, "category": "Component", "cause": "Temperature sensor out of calibration" },
+    { "rank": 4, "category": "Wiring", "cause": "Temperature-signal circuit shorted toward ground" }
+  ],
+  "falsePositiveConditions": ["A sensor or wiring fault can report high temperature when the fluid is not overheated."],
+  "confirmatoryTests": [
+    "Stop strenuous driving and independently confirm transmission temperature.",
+    "Check fluid level and condition using the applicable service procedure.",
+    "Test the temperature sensor and its circuit if measured fluid temperature is normal."
+  ],
+  "safetyLevel": "Stop and investigate if actual overheating is confirmed",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 79 section, lines 1312-1321",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

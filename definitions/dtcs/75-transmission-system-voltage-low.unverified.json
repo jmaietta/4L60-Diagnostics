@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/dtc.schema.json",
+  "schemaVersion": "1.0.0",
+  "definitionVersion": "0.2.0-documentary",
+  "verificationStatus": "Unverified",
+  "productionEligible": false,
+  "definitionId": "roadmaster-1994-dtc-75",
+  "code": "75",
+  "codeFormat": "GM OBD-I two-digit",
+  "system": "Transmission electrical",
+  "title": "Transmission system voltage low",
+  "plainEnglishMeaning": "The voltage available to the transmission control system was too low for dependable operation.",
+  "enableCriteria": null,
+  "failureCriteria": "The reproduced diagnostic chart treats less than 9 volts as a low-voltage supply condition; the exact code-setting duration is not yet verified.",
+  "maturityCriteria": null,
+  "pcmFallbackAction": [],
+  "driverSymptoms": [],
+  "likelyCauses": [
+    { "rank": 1, "category": "Power supply", "cause": "Low battery or charging-system voltage" },
+    { "rank": 2, "category": "Connection", "cause": "Poor connection at the starter-solenoid feed or fusible link" },
+    { "rank": 3, "category": "Electrical load", "cause": "Excessive accessory current draw" },
+    { "rank": 4, "category": "Controller", "cause": "PCM fault only if the measured supply remains normal" }
+  ],
+  "falsePositiveConditions": ["A voltage drop caused by another electrical load can set this code without a transmission component failure."],
+  "confirmatoryTests": [
+    "Measure battery and charging voltage while the fault is present.",
+    "Perform voltage-drop tests across the transmission and PCM power feeds.",
+    "Check whether operating a specific accessory causes the voltage drop."
+  ],
+  "safetyLevel": "Service soon",
+  "sourceReferences": [
+    "PORTAL-DIAGNOSTOV-1994-ROADMASTER-CODES-2026-07-30: Code 75 section, lines 1259-1267",
+    "LT1-DATASTREAM-DEFINITIONS-2026-07-30:A276.DS logged DTC bit"
+  ]
+}

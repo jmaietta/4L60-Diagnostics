@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lt1diagnostics.local/schemas/test.schema.json",
+  "title": "LT1Diagnostics guided test definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "definitionVersion", "verificationStatus", "productionEligible", "testId", "displayName", "enabled", "preconditions", "operatorInstructions", "requiredSignals", "startTrigger", "stopTrigger", "invalidatingConditions", "metrics", "baselineSelector", "dtcSnapshotPoints", "safetyConstraints", "commentaryRules", "sourceReferences"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "verificationStatus": { "enum": ["Unverified", "Verified", "Superseded"] },
+    "productionEligible": { "type": "boolean" },
+    "testId": { "type": "string", "minLength": 1 },
+    "displayName": { "type": "string", "minLength": 1 },
+    "enabled": { "type": "boolean" },
+    "preconditions": { "type": "array" },
+    "operatorInstructions": { "type": "array" },
+    "requiredSignals": { "type": "array" },
+    "startTrigger": { "type": ["object", "null"] },
+    "stopTrigger": { "type": ["object", "null"] },
+    "invalidatingConditions": { "type": "array" },
+    "metrics": { "type": "array" },
+    "baselineSelector": { "type": ["object", "null"] },
+    "dtcSnapshotPoints": { "type": "array" },
+    "safetyConstraints": { "type": "array" },
+    "commentaryRules": { "type": "array" },
+    "sourceReferences": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [{ "if": { "properties": { "verificationStatus": { "const": "Unverified" } } }, "then": { "properties": { "productionEligible": { "const": false }, "enabled": { "const": false } } } }]
+}
