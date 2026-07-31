@@ -26,9 +26,11 @@ public sealed class DependencyBoundaryTests
             string path = Path.Combine(root, "src", projectName, $"{projectName}.csproj");
             XDocument document = XDocument.Load(path);
             string[] actual = document.Descendants("ProjectReference")
-                .Select(element => Path.GetFileNameWithoutExtension((string?)element.Attribute("Include")))
+                .Select(element => (string?)element.Attribute("Include"))
+                .Where(reference => !string.IsNullOrWhiteSpace(reference))
+                .Select(reference => Path.GetFileNameWithoutExtension(reference!.Replace('\\', '/')))
                 .Order(StringComparer.Ordinal)
-                .ToArray()!;
+                .ToArray();
 
             Assert.Equal(expected.Order(StringComparer.Ordinal), actual);
         }
