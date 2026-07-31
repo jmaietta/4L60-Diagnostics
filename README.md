@@ -22,8 +22,10 @@ Windows may show an **Unknown Publisher** warning because the installer is not y
 
 [Download 4L60 Diagnostics for Linux](https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-linux-x64.tar.gz)
 
+This downloads a compressed Linux installer folder (`.tar.gz`). It serves the same purpose as a ZIP file.
+
 1. Open your **Downloads** folder after the download finishes.
-2. Right-click `4L60-Diagnostics-linux-x64.tar.gz` and extract it.
+2. Right-click the downloaded file and select **Extract**.
 3. Open the extracted `4L60-Diagnostics-linux-x64` folder in a terminal.
 4. Run:
 

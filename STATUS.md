@@ -71,7 +71,7 @@ See `docs/SOURCE_REGISTRY.md`, `PROTOCOL_EVIDENCE.md`, and `BASELINE_EVIDENCE.md
 - App tests cover the simulator lifecycle, every workspace navigation target, guided-demo routing through both the async API and the actual button command interface, retained multi-sample state, serial discovery/connection, actionable discovery failures, valid raw-session replay, malformed-file rejection, DTC explanation mapping, HTML/CSV generation, and report saving.
 - One hardware test remains opt-in and is excluded by the normal `Category!=Hardware` filter.
 - Final `dotnet format --verify-no-changes`: passed.
-- Self-contained publishes pass for `win-x64` and `linux-x64`. The Windows archive is `artifacts/4L60-Diagnostics-win-x64.zip` with SHA-256 `58A14848336FC692BAC49B14679C1912B32CD8A37AA7BA5CC19C83D580CEE232`. The Linux archive is `artifacts/4L60-Diagnostics-linux-x64.tar.gz` with SHA-256 `493D8FC7E8A5D46A992D304966D76EF1E88F19903ECA6195DF3BF463800A47AE`.
+- Self-contained publishes pass for `win-x64` and `linux-x64`. The Windows archive is `artifacts/4L60-Diagnostics-win-x64.zip` with SHA-256 `D0510BE26CBE6E92E4E074CBB65B2D66E99C70088AD4269896AED9B2258D895C`. The Linux archive is `artifacts/4L60-Diagnostics-linux-x64.tar.gz` with SHA-256 `ACA19151609E2DB8248AFF865908C4B30BCAC4B892F37C91123C2CEE510879BD`.
 - Windows five-second launch smoke passed for the renamed executable. Windows and Linux archive contents and installer syntax were validated locally; native Linux install/uninstall is an Ubuntu CI smoke test.
 - Native Linux execution is unavailable on this Windows host because WSL is not installed; Ubuntu CI is the native Linux verification path.
 
