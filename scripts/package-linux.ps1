@@ -23,7 +23,8 @@ try {
         --runtime linux-x64 `
         --self-contained true `
         --output $appRoot `
-        -p:NuGetAudit=false
+        -p:NuGetAudit=false `
+        -p:NuGetLockFilePath=obj\packages.linux-x64.lock.json
     if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed with exit code $LASTEXITCODE" }
 
     Copy-Item -LiteralPath packaging\linux\install.sh -Destination $stagingRoot

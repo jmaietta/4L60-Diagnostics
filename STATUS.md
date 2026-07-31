@@ -70,7 +70,7 @@ See `docs/SOURCE_REGISTRY.md`, `PROTOCOL_EVIDENCE.md`, and `BASELINE_EVIDENCE.md
 - App tests cover the simulator lifecycle, every workspace navigation target, guided-demo routing through both the async API and the actual button command interface, retained multi-sample state, serial discovery/connection, actionable discovery failures, valid raw-session replay, malformed-file rejection, DTC explanation mapping, HTML/CSV generation, and report saving.
 - One hardware test remains opt-in and is excluded by the normal `Category!=Hardware` filter.
 - Final `dotnet format --verify-no-changes`: passed.
-- Self-contained publishes pass for `win-x64` and `linux-x64`. The Windows archive is `artifacts/4L60-Diagnostics-win-x64.zip` with SHA-256 `174727971E1B919CF46D6E731FEF505E82E136FEB840C1FFCA9C8BC58E40352E`. The Linux archive is `artifacts/4L60-Diagnostics-linux-x64.tar.gz` with SHA-256 `41D01513B86D8D3336738CEE1E3CEDB39389363AE3471ED954466158BA034C46`.
+- Self-contained publishes pass for `win-x64` and `linux-x64`. The Windows archive is `artifacts/4L60-Diagnostics-win-x64.zip` with SHA-256 `1C1D09514C5A85DBA75934952F5152A37340E759066C79DDAB80CD64C8C1CE92`. The Linux archive is `artifacts/4L60-Diagnostics-linux-x64.tar.gz` with SHA-256 `1FB6AA3FA2244B6191C91F94BD28DDE8BE9F9BBF15FE3F4B93D60412E88C5593`.
 - Windows five-second launch smoke passed for the renamed executable. Windows and Linux archive contents and installer syntax were validated locally; native Linux install/uninstall is an Ubuntu CI smoke test.
 - Native Linux execution is unavailable on this Windows host because WSL is not installed; Ubuntu CI is the native Linux verification path.
 
@@ -87,7 +87,7 @@ See `docs/SOURCE_REGISTRY.md`, `PROTOCOL_EVIDENCE.md`, and `BASELINE_EVIDENCE.md
 - The A276 archive lacks publisher/version/license provenance. It is a documentary seed, not sufficient evidence for `Verified` status.
 - Cable-specific VID/PID coverage and udev automation remain disabled pending exact hardware evidence.
 - The Windows installer is not code-signed, so Windows may display an Unknown Publisher/SmartScreen warning. Public distribution needs a signing certificate and release signing.
-- Git remote `origin` is configured for the public repository `https://github.com/jmaietta/4L60-Diagnostics`. The connected GitHub app confirms administrator/push access, and normal Git credentials can reach the empty `main` branch target. The separate GitHub CLI token remains invalid but does not block Git publication.
+- Git remote `origin` is configured for the public repository `https://github.com/jmaietta/4L60-Diagnostics`, and the initial application is published on `main`. Git and GitHub CLI authentication both work when the Windows user keyring is available. The first CI run exposed runtime-specific NuGet lock-file contamination from local installer packaging; the lock files were regenerated portably and both package scripts now use runtime lock files under ignored `obj` directories so the error cannot recur.
 
 ## Plain-English evidence boundary
 

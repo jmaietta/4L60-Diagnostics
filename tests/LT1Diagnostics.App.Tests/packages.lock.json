@@ -355,21 +355,7 @@
           "xunit.extensibility.core": "[2.9.3]"
         }
       },
-      "lt1diagnostics.acquisition": {
-        "type": "Project",
-        "dependencies": {
-          "LT1Diagnostics.Domain": "[1.0.0, )",
-          "LT1Diagnostics.Protocol": "[1.0.0, )",
-          "LT1Diagnostics.Transport": "[1.0.0, )"
-        }
-      },
-      "lt1diagnostics.analysis": {
-        "type": "Project",
-        "dependencies": {
-          "LT1Diagnostics.Domain": "[1.0.0, )"
-        }
-      },
-      "lt1diagnostics.app": {
+      "4L60-Diagnostics": {
         "type": "Project",
         "dependencies": {
           "Avalonia": "[12.1.0, )",
@@ -383,6 +369,20 @@
           "LT1Diagnostics.Reporting": "[1.0.0, )",
           "LT1Diagnostics.Simulator": "[1.0.0, )",
           "LT1Diagnostics.Transport": "[1.0.0, )"
+        }
+      },
+      "lt1diagnostics.acquisition": {
+        "type": "Project",
+        "dependencies": {
+          "LT1Diagnostics.Domain": "[1.0.0, )",
+          "LT1Diagnostics.Protocol": "[1.0.0, )",
+          "LT1Diagnostics.Transport": "[1.0.0, )"
+        }
+      },
+      "lt1diagnostics.analysis": {
+        "type": "Project",
+        "dependencies": {
+          "LT1Diagnostics.Domain": "[1.0.0, )"
         }
       },
       "lt1diagnostics.domain": {
