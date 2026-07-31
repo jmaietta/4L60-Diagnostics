@@ -24,7 +24,7 @@ The application remains read-only. It does not implement PCM flashing or forced 
 - Deterministic HTML diagnostic report and CSV measurement export through native save dialogs; reports keep the raw-session provenance and validation warning visible
 - Self-contained Windows package with a double-click per-user installer, Desktop/Start-menu shortcuts, uninstall entry, no administrator requirement, and no system-wide .NET installation
 - Self-contained Linux x64 package with a per-user `install.sh`, application-menu entry, `~/.local/bin/4l60-diagnostics` launcher, uninstaller, no root requirement, and no system-wide .NET installation; native install/uninstall smoke is enforced in Ubuntu CI
-- Direct Windows and Linux installer-download buttons in the app, plus user-first README installation steps that do not require navigating GitHub's release interface
+- Copyable Windows and Linux installer links in the app, with visible selectable URLs and user-first README installation steps that do not require navigating GitHub's release interface
 - Connection and data-quality domain models without fabricated thresholds
 - Windows/Linux scripts, Windows/Ubuntu CI, self-contained packaging configuration, schemas, architecture records, source/evidence registers, and notices
 
@@ -71,7 +71,7 @@ See `docs/SOURCE_REGISTRY.md`, `PROTOCOL_EVIDENCE.md`, and `BASELINE_EVIDENCE.md
 - App tests cover the simulator lifecycle, every workspace navigation target, guided-demo routing through both the async API and the actual button command interface, retained multi-sample state, serial discovery/connection, actionable discovery failures, valid raw-session replay, malformed-file rejection, DTC explanation mapping, HTML/CSV generation, and report saving.
 - One hardware test remains opt-in and is excluded by the normal `Category!=Hardware` filter.
 - Final `dotnet format --verify-no-changes`: passed.
-- Self-contained publishes pass for `win-x64` and `linux-x64`. The Windows archive is `artifacts/4L60-Diagnostics-win-x64.zip` with SHA-256 `D0510BE26CBE6E92E4E074CBB65B2D66E99C70088AD4269896AED9B2258D895C`. The Linux archive is `artifacts/4L60-Diagnostics-linux-x64.tar.gz` with SHA-256 `ACA19151609E2DB8248AFF865908C4B30BCAC4B892F37C91123C2CEE510879BD`.
+- Self-contained publishes pass for `win-x64` and `linux-x64`. The Windows archive is `artifacts/4L60-Diagnostics-win-x64.zip` with SHA-256 `88AEEC6AEEE58A84F2D8F6235A19457E12C73B57EBE11463DB22573DAFB6F5B6`. The Linux archive is `artifacts/4L60-Diagnostics-linux-x64.tar.gz` with SHA-256 `5C55F5724234BA724FA9E49EF4970B517D0DBD43FCC654BE1DE8178514A2ED11`.
 - Windows five-second launch smoke passed for the renamed executable. Windows and Linux archive contents and installer syntax were validated locally; native Linux install/uninstall is an Ubuntu CI smoke test.
 - Native Linux execution is unavailable on this Windows host because WSL is not installed; Ubuntu CI is the native Linux verification path.
 

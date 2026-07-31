@@ -286,7 +286,7 @@
               <StackPanel Spacing="7">
                 <TextBlock Classes="kicker" Text="GETTING STARTED" />
                 <TextBlock Classes="pageTitle" Text="How to use 4L60 Diagnostics" />
-                <TextBlock Classes="muted" Text="Start with the demo, then follow the same workflow when the Roadmaster is connected." />
+                <TextBlock Classes="muted" Text="Start with the demo. The current vehicle workflow captures one parked snapshot; continuous road-test recording is not enabled yet." />
               </StackPanel>
             </Grid>
 
@@ -303,33 +303,32 @@
             </Border>
 
             <StackPanel Spacing="12">
-              <TextBlock Classes="sectionTitle" Text="The basic workflow" />
+              <TextBlock Classes="sectionTitle" Text="Parked snapshot workflow" />
               <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="13">
                 <Border Grid.Column="0" Classes="card">
-                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="1" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Connect" /><TextBlock Classes="muted" Text="Connect the OBD-I diagnostic cable. Connect the vehicle end to the car's diagnostic port and the USB end to your laptop." TextWrapping="Wrap" /></StackPanel>
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="1" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Prepare" /><TextBlock Classes="muted" Text="Park safely, set the parking brake, and turn the key to ON. The engine can be off." TextWrapping="Wrap" /></StackPanel>
                 </Border>
                 <Border Grid.Column="1" Classes="card">
-                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="2" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Capture" /><TextBlock Classes="muted" Text="Wait until the app says “Snapshot ready.” Raw vehicle data is saved automatically." TextWrapping="Wrap" /></StackPanel>
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="2" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Connect" /><TextBlock Classes="muted" Text="Connect the diagnostic cable to the car and laptop. Open Connect vehicle, find the cable, then select Connect to vehicle." TextWrapping="Wrap" /></StackPanel>
                 </Border>
                 <Border Grid.Column="2" Classes="card">
-                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="3" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Review" /><TextBlock Classes="muted" Text="Open Trouble codes, Measurements, and Transmission." TextWrapping="Wrap" /></StackPanel>
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="3" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Capture" /><TextBlock Classes="muted" Text="Wait for Snapshot ready or an on-screen explanation. The app saves the raw vehicle data automatically." TextWrapping="Wrap" /></StackPanel>
                 </Border>
                 <Border Grid.Column="3" Classes="card">
-                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="4" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Save" /><TextBlock Classes="muted" Text="The app saves a .lt1raw session file. Open Saved sessions, select the file, then click Replay selected session." TextWrapping="Wrap" /></StackPanel>
+                  <StackPanel Spacing="10"><Border Width="34" Height="34" Background="#DBEAFE" CornerRadius="17" HorizontalAlignment="Left"><TextBlock Text="4" FontSize="14" FontWeight="Bold" Foreground="#1D4ED8" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock FontSize="16" FontWeight="SemiBold" Text="Review" /><TextBlock Classes="muted" Text="Open Trouble codes, Measurements, and Transmission. Use Saved sessions to reopen the automatically saved capture." TextWrapping="Wrap" /></StackPanel>
                 </Border>
               </Grid>
             </StackPanel>
 
             <Grid ColumnDefinitions="1.25*,*" ColumnSpacing="16">
-              <Border Grid.Column="0" Classes="card" Padding="27">
-                <StackPanel Spacing="14">
-                  <TextBlock Classes="sectionTitle" Text="Vehicle connection checklist" />
-                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="01" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Connect the vehicle end of the OBD-I diagnostic cable to the car's diagnostic port and the USB end to your laptop." TextWrapping="Wrap" /></Grid>
-                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="02" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Turn the key to ON. The engine may be off for the first snapshot." TextWrapping="Wrap" /></Grid>
-                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="03" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Open Connect vehicle, select Find connected cables, and choose the cable." TextWrapping="Wrap" /></Grid>
-                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="04" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Select Connect to vehicle. Wait until the app says “Snapshot ready” or displays an explanation." TextWrapping="Wrap" /></Grid>
-                  <Grid ColumnDefinitions="34,*" ColumnSpacing="10"><TextBlock Text="05" FontSize="13" FontWeight="Bold" Foreground="#2563EB" /><TextBlock Grid.Column="1" Classes="muted" Text="Review the result pages. Disconnect before unplugging the cable." TextWrapping="Wrap" /></Grid>
-                  <Button Classes="secondary" Content="Connect vehicle  →" Command="{Binding NavigateConnectCommand}" HorizontalAlignment="Left" Margin="0,5,0,0" />
+              <Border Grid.Column="0" Background="#FFF7ED" BorderBrush="#FED7AA" BorderThickness="1" CornerRadius="8" Padding="27">
+                <StackPanel Spacing="12">
+                  <TextBlock Classes="kicker" Text="ROAD-TEST RECORDING" Foreground="#9A3412" />
+                  <TextBlock Classes="sectionTitle" Text="Not available in this build" />
+                  <TextBlock Text="The app currently takes one parked snapshot. It does not collect changing measurements while the car is moving." FontSize="15" FontWeight="SemiBold" Foreground="#431407" TextWrapping="Wrap" LineHeight="22" />
+                  <TextBlock Classes="muted" Text="Before repeated sampling can be enabled, its request timing and communication restoration must be measured on the Roadmaster so the app does not interfere with other vehicle modules." TextWrapping="Wrap" LineHeight="21" />
+                  <TextBlock Classes="muted" Text="Do not drive expecting this version to record a transmission road test." TextWrapping="Wrap" FontWeight="SemiBold" />
+                  <Button Classes="secondary" Content="Connect for parked snapshot  →" Command="{Binding NavigateConnectCommand}" HorizontalAlignment="Left" Margin="0,5,0,0" />
                 </StackPanel>
               </Border>
 
@@ -424,26 +423,30 @@
 
             <StackPanel Spacing="12">
               <TextBlock Classes="sectionTitle" Text="Install on another computer" />
-              <TextBlock Classes="muted" Text="Choose that computer's operating system below. The download starts directly and includes everything the app needs." />
+              <TextBlock Classes="muted" Text="Copy the correct link and email or message it to the other computer. Open the link there to download the installer." />
               <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
                 <Border Grid.Column="0" Classes="card" Padding="24">
                   <StackPanel Spacing="12">
                     <TextBlock Classes="kicker" Text="WINDOWS 10 / 11" />
                     <TextBlock Classes="sectionTitle" Text="Windows installation" />
-                    <Button Classes="primary" Content="Download for Windows  ↓" Command="{Binding DownloadWindowsInstallerCommand}" HorizontalAlignment="Stretch" />
-                    <TextBlock Text="1. When the download finishes, open your Downloads folder." TextWrapping="Wrap" />
-                    <TextBlock Text="2. Right-click 4L60-Diagnostics-win-x64.zip and select Extract All." TextWrapping="Wrap" />
-                    <TextBlock Text="3. Open the extracted folder and double-click Install.cmd." TextWrapping="Wrap" />
+                    <Button Classes="primary" Content="Copy Windows download link" Click="CopyWindowsDownloadLink_Click" HorizontalAlignment="Stretch" />
+                    <TextBox Text="https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-win-x64.zip" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="12" Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="7" Padding="12,9" />
+                    <TextBlock Text="1. Paste the copied link into an email or message to the other computer." TextWrapping="Wrap" />
+                    <TextBlock Text="2. On that computer, open the link. The Windows ZIP downloads automatically." TextWrapping="Wrap" />
+                    <TextBlock Text="3. Open Downloads, right-click the ZIP, and select Extract All." TextWrapping="Wrap" />
+                    <TextBlock Text="4. Open the extracted folder and double-click Install.cmd." TextWrapping="Wrap" />
                   </StackPanel>
                 </Border>
                 <Border Grid.Column="1" Classes="card" Padding="24">
                   <StackPanel Spacing="12">
                     <TextBlock Classes="kicker" Text="LINUX X64" />
                     <TextBlock Classes="sectionTitle" Text="Linux installation" />
-                    <Button Classes="primary" Content="Download for Linux  ↓" Command="{Binding DownloadLinuxInstallerCommand}" HorizontalAlignment="Stretch" />
-                    <TextBlock Text="1. When the download finishes, open your Downloads folder." TextWrapping="Wrap" />
-                    <TextBlock Text="2. The downloaded file is a compressed folder, like a ZIP. Right-click it and select Extract." TextWrapping="Wrap" />
-                    <TextBlock Text="3. Open the extracted folder in a terminal and enter:" TextWrapping="Wrap" />
+                    <Button Classes="primary" Content="Copy Linux download link" Click="CopyLinuxDownloadLink_Click" HorizontalAlignment="Stretch" />
+                    <TextBox Text="https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-linux-x64.tar.gz" IsReadOnly="True" TextWrapping="Wrap" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="12" Background="#F8FAFC" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="7" Padding="12,9" />
+                    <TextBlock Text="1. Paste the copied link into an email or message to the other computer." TextWrapping="Wrap" />
+                    <TextBlock Text="2. On that computer, open the link. The Linux installer package downloads automatically." TextWrapping="Wrap" />
+                    <TextBlock Text="3. Open Downloads. The file is a compressed folder, like a ZIP; right-click it and select Extract." TextWrapping="Wrap" />
+                    <TextBlock Text="4. Open the extracted folder in a terminal and enter:" TextWrapping="Wrap" />
                     <TextBox Text="bash install.sh" IsReadOnly="True" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="14" FontWeight="SemiBold" Background="#0F172A" Foreground="#F8FAFC" BorderThickness="0" CornerRadius="7" Padding="14,11" />
                   </StackPanel>
                 </Border>

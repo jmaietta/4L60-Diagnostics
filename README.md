@@ -41,6 +41,8 @@ The Linux installer does not require root access. Serial-port permissions may st
 
 The application can run a built-in demonstration, discover serial diagnostic cables, preserve raw ALDL traffic, replay saved `.lt1raw` sessions, decode the documentary A276 transmission snapshot, display source-backed DTC explanations, export reports, and show descriptive transmission timelines.
 
+The current release captures one parked snapshot. It does not yet collect changing measurements during a driving road test. Continuous polling remains disabled until its timing and communication-restoration behavior can be measured safely on the target Roadmaster.
+
 Vehicle validation against the target Roadmaster is still pending. Until that validation is complete, the app does not present its current A276 definitions or baseline comparisons as verified repair conclusions.
 
 ## Saved sessions
