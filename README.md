@@ -1,49 +1,66 @@
 # 4L60 Diagnostics
 
-Cross-platform, evidence-first diagnostics for the 1994 Buick Roadmaster Estate Wagon with the LT1 engine and 4L60E transmission. The application targets .NET 10 LTS and Avalonia 12 on Windows and Linux.
+A desktop diagnostic application for the 4L60E transmission in the 1994 Buick Roadmaster.
 
-Public repository: <https://github.com/jmaietta/4L60-Diagnostics>
+## Download the app
 
-The current repository implements Phase 0 and Phase 1 plus the implementable pre-vehicle work: ALDL framing/checksum, incremental parsing, a bounded read-only A276 snapshot coordinator, Mode 1 request construction, conservative chatter control, echo filtering, response correlation, raw recording/replay, multi-sample A276 transmission decoding, source-backed DTC explanations, descriptive session analysis, verification-gated baseline comparisons, HTML reports, CSV export, and golden/malformed tests. The UI can run a deterministic drive-sequence demo or connect to a serial interface and reports the acquisition result honestly. Target-Roadmaster verification remains pending, so A276 definitions and baseline judgments are not yet eligible to produce vehicle diagnostic conclusions.
+You do not need to install .NET or any developer tools. Choose your computer:
 
-Saved captures use the `.lt1raw` format. In the desktop app, open **Saved sessions**, select a capture, and choose **Replay selected session**. The app verifies the file, excludes damaged records from decoding, replays the preserved bytes through the production parser, and opens recovered measurements without connecting to the car. **Open another file** loads a `.lt1raw` capture from another location.
+### Windows 10 or 11
 
-## Install on Windows
+[Download 4L60 Diagnostics for Windows](https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-win-x64.zip)
 
-Download the Windows ZIP from the project release, extract it, and double-click `Install.cmd`. The package includes its own .NET runtime, requires no administrator access, and creates Desktop and Start-menu shortcuts. It does not install .NET system-wide.
+1. Open your **Downloads** folder after the download finishes.
+2. Right-click `4L60-Diagnostics-win-x64.zip` and select **Extract All**.
+3. Open the extracted folder.
+4. Double-click **Install.cmd**.
+5. Open **4L60 Diagnostics** from the Desktop or Start menu.
 
-Until releases are code-signed, Windows may show an Unknown Publisher warning. Compare the ZIP's SHA-256 checksum with the checksum published on the release page before installing it.
+Windows may show an **Unknown Publisher** warning because the installer is not yet code-signed.
 
-## Install on Linux x64
+### Linux x64
 
-Download `4L60-Diagnostics-linux-x64.tar.gz`, then run:
+[Download 4L60 Diagnostics for Linux](https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-linux-x64.tar.gz)
+
+1. Open your **Downloads** folder after the download finishes.
+2. Right-click `4L60-Diagnostics-linux-x64.tar.gz` and extract it.
+3. Open the extracted `4L60-Diagnostics-linux-x64` folder in a terminal.
+4. Run:
 
 ```bash
-tar -xzf 4L60-Diagnostics-linux-x64.tar.gz
-cd 4L60-Diagnostics-linux-x64
 bash install.sh
 ```
 
-The per-user installer creates an application-menu entry and `~/.local/bin/4l60-diagnostics`. It includes the .NET runtime and does not require root access. Serial-port permissions remain cable-specific; the installer intentionally does not install an unverified udev rule automatically.
+5. Open **4L60 Diagnostics** from the application menu.
 
-The prerequisites and commands below are only for developers building from source.
+The Linux installer does not require root access. Serial-port permissions may still depend on the diagnostic cable.
 
-## Developer prerequisites
+## Current diagnostic status
+
+The application can run a built-in demonstration, discover serial diagnostic cables, preserve raw ALDL traffic, replay saved `.lt1raw` sessions, decode the documentary A276 transmission snapshot, display source-backed DTC explanations, export reports, and show descriptive transmission timelines.
+
+Vehicle validation against the target Roadmaster is still pending. Until that validation is complete, the app does not present its current A276 definitions or baseline comparisons as verified repair conclusions.
+
+## Saved sessions
+
+Open **Saved sessions** in the app, choose a `.lt1raw` capture, and select **Replay selected session**. Replay reads the saved data and never transmits anything to the vehicle.
+
+## Developer information
+
+The commands below are only for developers building the source code.
+
+Prerequisites:
 
 - .NET SDK 10.0.302 or a compatible later 10.0 patch
 - Windows 10/11 x64, or desktop Linux x64 with X11 and Avalonia's native dependencies
 
-## Quick start
-
-Windows PowerShell:
+Windows:
 
 ```powershell
 .\scripts\build.ps1
 .\scripts\test.ps1
 .\.dotnet\dotnet.exe run --project .\src\LT1Diagnostics.App
 ```
-
-If .NET is installed system-wide, `dotnet run --project .\src\LT1Diagnostics.App` also works.
 
 Linux:
 
@@ -53,11 +70,11 @@ bash scripts/test.sh
 dotnet run --project src/LT1Diagnostics.App
 ```
 
-See [the architecture overview](docs/architecture/OVERVIEW.md), [project status](STATUS.md), and the governing [build plan](BUILD_PLAN.md).
+See [the architecture overview](docs/architecture/OVERVIEW.md), [project status](STATUS.md), and [build plan](BUILD_PLAN.md).
 
-## Safety and evidence status
+## Safety
 
-- No PCM flashing or active transmission/engine controls are implemented.
-- No ALDL message ID, offset, bit definition, scaling formula, DTC criterion, or normal range is implemented without an evidence-register entry.
-- All current vehicle/diagnostic definition files are explicitly unverified and ineligible for production conclusions.
-- Simulator values are test-only. They use documentary A276 framing through the production builder but are never represented as captured or verified vehicle traffic.
+- No PCM flashing is implemented.
+- No forced gear, TCC, line-pressure, timing, or injector controls are implemented.
+- Raw bytes and provenance are preserved so corrected definitions can re-decode old sessions.
+- Simulator data is clearly separated from vehicle data.

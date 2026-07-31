@@ -214,6 +214,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposab
             BrowseSessionAsync,
             () => !IsBusy && !HasActiveTransport);
         NavigateGuideCommand = new RelayCommand(() => SelectedPage = WorkspacePage.Guide);
+        DownloadWindowsInstallerCommand = new RelayCommand(
+            () => OpenWebPage(
+                "https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-win-x64.zip"));
+        DownloadLinuxInstallerCommand = new RelayCommand(
+            () => OpenWebPage(
+                "https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-linux-x64.tar.gz"));
         ExportReportCommand = new AsyncCommand(
             () => ExportReportAsync("html"),
             () => !IsBusy && HasTransmissionData);
@@ -260,6 +266,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposab
     public AsyncCommand BrowseSessionCommand { get; }
 
     public RelayCommand NavigateGuideCommand { get; }
+
+    public RelayCommand DownloadWindowsInstallerCommand { get; }
+
+    public RelayCommand DownloadLinuxInstallerCommand { get; }
 
     public AsyncCommand ExportReportCommand { get; }
 
@@ -1562,6 +1572,15 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposab
             ? new ProcessStartInfo("explorer.exe", $"/select,\"{path}\"")
             : new ProcessStartInfo("xdg-open", directory);
         startInfo.UseShellExecute = true;
+        _ = Process.Start(startInfo);
+    }
+
+    private static void OpenWebPage(string address)
+    {
+        var startInfo = new ProcessStartInfo(address)
+        {
+            UseShellExecute = true,
+        };
         _ = Process.Start(startInfo);
     }
 

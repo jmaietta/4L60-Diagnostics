@@ -424,22 +424,27 @@
 
             <StackPanel Spacing="12">
               <TextBlock Classes="sectionTitle" Text="Install on another computer" />
-              <TextBlock Classes="muted" Text="Both packages include the application runtime. You do not need to install .NET separately." />
+              <TextBlock Classes="muted" Text="Choose that computer's operating system below. The download starts directly and includes everything the app needs." />
               <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
                 <Border Grid.Column="0" Classes="card" Padding="24">
-                  <StackPanel Spacing="10">
+                  <StackPanel Spacing="12">
                     <TextBlock Classes="kicker" Text="WINDOWS 10 / 11" />
                     <TextBlock Classes="sectionTitle" Text="Windows installation" />
-                    <TextBlock Classes="muted" Text="Extract the Windows ZIP, open the extracted folder, and double-click Install.cmd." TextWrapping="Wrap" />
-                    <TextBox Text="Double-click Install.cmd" IsReadOnly="True" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="14" FontWeight="SemiBold" Background="#0F172A" Foreground="#F8FAFC" BorderThickness="0" CornerRadius="7" Padding="14,11" />
+                    <Button Classes="primary" Content="Download for Windows  ↓" Command="{Binding DownloadWindowsInstallerCommand}" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="1. When the download finishes, open your Downloads folder." TextWrapping="Wrap" />
+                    <TextBlock Text="2. Right-click 4L60-Diagnostics-win-x64.zip and select Extract All." TextWrapping="Wrap" />
+                    <TextBlock Text="3. Open the extracted folder and double-click Install.cmd." TextWrapping="Wrap" />
                   </StackPanel>
                 </Border>
                 <Border Grid.Column="1" Classes="card" Padding="24">
-                  <StackPanel Spacing="10">
+                  <StackPanel Spacing="12">
                     <TextBlock Classes="kicker" Text="LINUX X64" />
                     <TextBlock Classes="sectionTitle" Text="Linux installation" />
-                    <TextBlock Classes="muted" Text="Open a terminal in the folder containing the downloaded archive, then run these commands." TextWrapping="Wrap" />
-                    <TextBox Text="tar -xzf 4L60-Diagnostics-linux-x64.tar.gz&#10;cd 4L60-Diagnostics-linux-x64&#10;bash install.sh" IsReadOnly="True" AcceptsReturn="True" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="14" FontWeight="SemiBold" Background="#0F172A" Foreground="#F8FAFC" BorderThickness="0" CornerRadius="7" Padding="14,11" MinHeight="92" />
+                    <Button Classes="primary" Content="Download for Linux  ↓" Command="{Binding DownloadLinuxInstallerCommand}" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="1. When the download finishes, open your Downloads folder." TextWrapping="Wrap" />
+                    <TextBlock Text="2. Right-click 4L60-Diagnostics-linux-x64.tar.gz and extract it." TextWrapping="Wrap" />
+                    <TextBlock Text="3. Open the extracted folder in a terminal and enter:" TextWrapping="Wrap" />
+                    <TextBox Text="bash install.sh" IsReadOnly="True" FontFamily="Cascadia Mono, Consolas, monospace" FontSize="14" FontWeight="SemiBold" Background="#0F172A" Foreground="#F8FAFC" BorderThickness="0" CornerRadius="7" Padding="14,11" />
                   </StackPanel>
                 </Border>
               </Grid>
