@@ -12,9 +12,9 @@ public static class DiagnosticReportGenerator
         ArgumentNullException.ThrowIfNull(input);
         var output = new StringBuilder();
         output.Append("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">")
-            .Append("<title>4L60 Diagnostics report</title><style>")
+            .Append("<title>Maietta Diagnostics — GM 4L60E report</title><style>")
             .Append("body{font:15px system-ui,sans-serif;color:#0f172a;background:#f8fafc;margin:0}main{max-width:980px;margin:36px auto;background:white;padding:42px;border:1px solid #e2e8f0;border-radius:12px}h1{font-size:30px;margin:0 0 6px}h2{font-size:20px;margin-top:34px}.meta{color:#475569}.notice{background:#fffbeb;border:1px solid #fde68a;padding:14px 16px;border-radius:8px;margin:24px 0}table{width:100%;border-collapse:collapse;margin-top:14px}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #e2e8f0}th{font-size:12px;letter-spacing:.06em;color:#475569;background:#f8fafc}.dtc{border:1px solid #e2e8f0;border-radius:8px;padding:18px;margin:12px 0}.code{color:#1d4ed8;font-weight:700}footer{margin-top:36px;color:#64748b;font-size:13px}@media print{body{background:white}main{border:0;margin:0;padding:0}}</style></head><body><main>")
-            .Append("<h1>4L60 Diagnostics report</h1><div class=\"meta\">")
+            .Append("<h1>Maietta Diagnostics</h1><div class=\"meta\"><strong>GM 4L60E diagnostic report</strong><br>")
             .Append(E(input.Vehicle)).Append(" · ").Append(E(input.GeneratedAt.ToString("yyyy-MM-dd HH:mm zzz", CultureInfo.InvariantCulture)))
             .Append("</div><div class=\"notice\"><strong>").Append(E(input.EvidenceLabel)).Append("</strong><br>")
             .Append(E(input.Analysis.InterpretationBoundary)).Append("</div>")

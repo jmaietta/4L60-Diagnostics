@@ -48,6 +48,9 @@ public sealed class MainWindowViewModelTests
             static () => new FakeTransport([]),
             static () => new A276SnapshotSimulatorTransport());
 
+        Assert.True(viewModel.IsOverviewPage);
+
+        viewModel.NavigateGuideCommand.Execute(null);
         Assert.True(viewModel.IsGuidePage);
 
         viewModel.NavigateOverviewCommand.Execute(null);
@@ -275,7 +278,8 @@ public sealed class MainWindowViewModelTests
 
             Assert.True(File.Exists(path));
             string report = await File.ReadAllTextAsync(path);
-            Assert.Contains("4L60 Diagnostics report", report, StringComparison.Ordinal);
+            Assert.Contains("Maietta Diagnostics", report, StringComparison.Ordinal);
+            Assert.Contains("GM 4L60E diagnostic report", report, StringComparison.Ordinal);
             Assert.Contains("DEMO DATA", report, StringComparison.Ordinal);
             Assert.Contains("Recorded timeline", report, StringComparison.Ordinal);
             Assert.StartsWith("Report saved:", viewModel.ReportStatus, StringComparison.Ordinal);

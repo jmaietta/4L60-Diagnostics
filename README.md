@@ -1,6 +1,6 @@
-# 4L60 Diagnostics
+# Maietta Diagnostics
 
-A desktop diagnostic application for the 4L60E transmission in the 1994 Buick Roadmaster.
+A desktop diagnostic platform. The current module supports GM 4L60E analysis with a 1994 Buick Roadmaster A276 vehicle profile.
 
 ## Download the app
 
@@ -8,19 +8,19 @@ You do not need to install .NET or any developer tools. Choose your computer:
 
 ### Windows 10 or 11
 
-[Download 4L60 Diagnostics for Windows](https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-win-x64.zip)
+[Download Maietta Diagnostics for Windows](https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-win-x64.zip)
 
 1. Open your **Downloads** folder after the download finishes.
 2. Right-click `4L60-Diagnostics-win-x64.zip` and select **Extract All**.
 3. Open the extracted folder.
 4. Double-click **Install.cmd**.
-5. Open **4L60 Diagnostics** from the Desktop or Start menu.
+5. Open **Maietta Diagnostics** from the Desktop or Start menu.
 
 Windows may show an **Unknown Publisher** warning because the installer is not yet code-signed.
 
 ### Linux x64
 
-[Download 4L60 Diagnostics for Linux](https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-linux-x64.tar.gz)
+[Download Maietta Diagnostics for Linux](https://github.com/jmaietta/4L60-Diagnostics/releases/latest/download/4L60-Diagnostics-linux-x64.tar.gz)
 
 This downloads a compressed Linux installer folder (`.tar.gz`). It serves the same purpose as a ZIP file.
 
@@ -33,7 +33,7 @@ This downloads a compressed Linux installer folder (`.tar.gz`). It serves the sa
 bash install.sh
 ```
 
-5. Open **4L60 Diagnostics** from the application menu.
+5. Open **Maietta Diagnostics** from the application menu.
 
 The Linux installer does not require root access. Serial-port permissions may still depend on the diagnostic cable.
 

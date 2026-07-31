@@ -1,4 +1,4 @@
-4L60 Diagnostics — Linux x64 installation
+Maietta Diagnostics — Linux x64 installation
 
 Open a terminal in this extracted folder and run:
 

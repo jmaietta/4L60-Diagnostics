@@ -105,7 +105,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposab
     private string? _lastReportPath;
     private bool _hasScannedForDevices;
     private string _cableDiscoveryMessage = "Connect the USB diagnostic cable, then select Find connected cables.";
-    private WorkspacePage _selectedPage = WorkspacePage.Guide;
+    private WorkspacePage _selectedPage = WorkspacePage.Overview;
 
     public MainWindowViewModel()
         : this(

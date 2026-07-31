@@ -19,11 +19,11 @@ public sealed partial class MainWindow : Window
         IReadOnlyList<IStorageFile> files = await StorageProvider.OpenFilePickerAsync(
             new FilePickerOpenOptions
             {
-                Title = "Open a 4L60 Diagnostics session",
+                Title = "Open a Maietta Diagnostics session",
                 AllowMultiple = false,
                 FileTypeFilter =
                 [
-                    new FilePickerFileType("4L60 Diagnostics raw session")
+                    new FilePickerFileType("Maietta Diagnostics raw session")
                     {
                         Patterns = ["*.lt1raw"],
                     },

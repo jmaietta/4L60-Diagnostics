@@ -1,8 +1,8 @@
-4L60 Diagnostics — Windows installation
+Maietta Diagnostics — Windows installation
 
 1. Extract the entire ZIP.
 2. Double-click Install.cmd.
-3. Launch 4L60 Diagnostics from the Desktop or Start menu.
+3. Launch Maietta Diagnostics from the Desktop or Start menu.
 
 The application includes its own .NET runtime. It does not install .NET system-wide
 and does not require administrator access.

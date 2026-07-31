@@ -19,6 +19,6 @@ sudo bash packaging/linux/install-udev-rule.sh
 sudo usermod -aG lt1diag "$USER"
 ```
 
-Sign out and back in before testing. Never run 4L60 Diagnostics as root.
+Sign out and back in before testing. Never run Maietta Diagnostics as root.
 
 Source: FTDI FT232R datasheet, version 2.16, table 8.1: <https://ftdichip.com/wp-content/uploads/2020/08/DS_FT232R.pdf>.

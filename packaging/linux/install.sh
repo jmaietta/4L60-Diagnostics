@@ -24,13 +24,13 @@ desktop_file="$applications_dir/4l60-diagnostics.desktop"
 printf '%s\n' \
     '[Desktop Entry]' \
     'Type=Application' \
-    'Name=4L60 Diagnostics' \
-    'Comment=4L60E diagnostics for the 1994 Buick Roadmaster' \
+    'Name=Maietta Diagnostics' \
+    'Comment=GM 4L60E diagnostic workspace' \
     "Exec=$executable" \
     'Icon=applications-system' \
     'Terminal=false' \
     'Categories=Utility;Automotive;' > "$desktop_file"
 chmod 0644 "$desktop_file"
 
-echo '4L60 Diagnostics is installed.'
+echo 'Maietta Diagnostics is installed.'
 echo 'Open it from your application menu or run: 4l60-diagnostics'

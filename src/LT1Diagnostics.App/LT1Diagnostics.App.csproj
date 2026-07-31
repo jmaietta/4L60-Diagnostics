@@ -2,8 +2,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <AssemblyName>4L60-Diagnostics</AssemblyName>
-    <Product>4L60 Diagnostics</Product>
-    <Title>4L60 Diagnostics</Title>
+    <Product>Maietta Diagnostics</Product>
+    <Title>Maietta Diagnostics</Title>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <ItemGroup>

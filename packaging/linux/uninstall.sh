@@ -13,4 +13,4 @@ fi
 
 rm -f -- "$launcher" "$desktop_file"
 rm -rf -- "$install_root"
-echo '4L60 Diagnostics was removed.'
+echo 'Maietta Diagnostics was removed.'
