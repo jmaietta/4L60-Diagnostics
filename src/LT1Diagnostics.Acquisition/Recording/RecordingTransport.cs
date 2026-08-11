@@ -36,11 +36,15 @@ public sealed class RecordingTransport(ITransport inner, RawSessionWriter writer
     public async ValueTask WriteAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
+        // Record when transmission starts, not after it completes, so replay timing
+        // matches the instant the bytes reached the wire.
+        long writeStartTimestamp = MonotonicTicks();
+        var writeStartWallClock = DateTimeOffset.UtcNow;
         await inner.WriteAsync(data, cancellationToken).ConfigureAwait(false);
         await writer.AppendAsync(
             RawSessionRecordType.BytesTransmitted,
-            MonotonicTicks(),
-            DateTimeOffset.UtcNow,
+            writeStartTimestamp,
+            writeStartWallClock,
             RawSessionRecordAttributes.None,
             data,
             CancellationToken.None).ConfigureAwait(false);
