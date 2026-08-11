@@ -189,40 +189,40 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposab
         _reportSavePicker = reportSavePicker ?? (static (_, _) => Task.FromResult<string?>(null));
         (_dtcKnowledgeCatalog, _dtcKnowledgeStatus) = LoadDefaultDtcKnowledge();
 
-        DiscoverCommand = new AsyncCommand(DiscoverAsync, () => !IsBusy && !HasActiveTransport);
-        ConnectCommand = new AsyncCommand(ConnectSelectedAsync, () => CanConnect);
-        SimulatorCommand = new AsyncCommand(SelectSimulatorAsync, () => !IsBusy && !HasActiveTransport);
-        DisconnectCommand = new AsyncCommand(DisconnectAsync, () => !IsBusy && HasActiveTransport);
-        RunDemoCommand = new AsyncCommand(
+        DiscoverCommand = Track(new AsyncCommand(DiscoverAsync, () => !IsBusy && !HasActiveTransport));
+        ConnectCommand = Track(new AsyncCommand(ConnectSelectedAsync, () => CanConnect));
+        SimulatorCommand = Track(new AsyncCommand(SelectSimulatorAsync, () => !IsBusy && !HasActiveTransport));
+        DisconnectCommand = Track(new AsyncCommand(DisconnectAsync, () => !IsBusy && HasActiveTransport));
+        RunDemoCommand = Track(new AsyncCommand(
             RunDemoAsync,
-            () => !IsBusy && (!HasActiveTransport || IsDemoSession));
-        NavigateOverviewCommand = new RelayCommand(() => SelectedPage = WorkspacePage.Overview);
-        NavigateConnectCommand = new RelayCommand(() => SelectedPage = WorkspacePage.Connect);
-        NavigateTroubleCodesCommand = new RelayCommand(() => SelectedPage = WorkspacePage.TroubleCodes);
-        NavigateLiveDataCommand = new RelayCommand(() => SelectedPage = WorkspacePage.LiveData);
-        NavigateTransmissionCommand = new RelayCommand(() => SelectedPage = WorkspacePage.Transmission);
-        NavigateSessionsCommand = new RelayCommand(OpenSessionsPage);
-        NavigateReportsCommand = new RelayCommand(() => SelectedPage = WorkspacePage.Reports);
-        OpenSessionFolderCommand = new RelayCommand(
+            () => !IsBusy && (!HasActiveTransport || IsDemoSession)));
+        NavigateOverviewCommand = Track(new RelayCommand(() => SelectedPage = WorkspacePage.Overview));
+        NavigateConnectCommand = Track(new RelayCommand(() => SelectedPage = WorkspacePage.Connect));
+        NavigateTroubleCodesCommand = Track(new RelayCommand(() => SelectedPage = WorkspacePage.TroubleCodes));
+        NavigateLiveDataCommand = Track(new RelayCommand(() => SelectedPage = WorkspacePage.LiveData));
+        NavigateTransmissionCommand = Track(new RelayCommand(() => SelectedPage = WorkspacePage.Transmission));
+        NavigateSessionsCommand = Track(new RelayCommand(OpenSessionsPage));
+        NavigateReportsCommand = Track(new RelayCommand(() => SelectedPage = WorkspacePage.Reports));
+        OpenSessionFolderCommand = Track(new RelayCommand(
             OpenSessionFolder,
-            () => SelectedSavedSession is not null || HasSavedSession);
-        RefreshSessionsCommand = new RelayCommand(RefreshSavedSessions);
-        ReplaySelectedSessionCommand = new AsyncCommand(
+            () => SelectedSavedSession is not null || HasSavedSession));
+        RefreshSessionsCommand = Track(new RelayCommand(RefreshSavedSessions));
+        ReplaySelectedSessionCommand = Track(new AsyncCommand(
             ReplaySelectedSessionAsync,
-            () => !IsBusy && !HasActiveTransport && SelectedSavedSession is not null);
-        BrowseSessionCommand = new AsyncCommand(
+            () => !IsBusy && !HasActiveTransport && SelectedSavedSession is not null));
+        BrowseSessionCommand = Track(new AsyncCommand(
             BrowseSessionAsync,
-            () => !IsBusy && !HasActiveTransport);
-        NavigateGuideCommand = new RelayCommand(() => SelectedPage = WorkspacePage.Guide);
-        ExportReportCommand = new AsyncCommand(
+            () => !IsBusy && !HasActiveTransport));
+        NavigateGuideCommand = Track(new RelayCommand(() => SelectedPage = WorkspacePage.Guide));
+        ExportReportCommand = Track(new AsyncCommand(
             () => ExportReportAsync("html"),
-            () => !IsBusy && HasTransmissionData);
-        ExportCsvCommand = new AsyncCommand(
+            () => !IsBusy && HasTransmissionData));
+        ExportCsvCommand = Track(new AsyncCommand(
             () => ExportReportAsync("csv"),
-            () => !IsBusy && HasTransmissionData);
-        OpenReportFolderCommand = new RelayCommand(
+            () => !IsBusy && HasTransmissionData));
+        OpenReportFolderCommand = Track(new RelayCommand(
             OpenReportFolder,
-            () => _lastReportPath is not null && File.Exists(_lastReportPath));
+            () => _lastReportPath is not null && File.Exists(_lastReportPath)));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -1483,6 +1483,20 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged, IAsyncDisposab
         DeviceSummary = exception.Message;
         SerialLinkDetail = exception.Message;
     }
+
+    private AsyncCommand Track(AsyncCommand command)
+    {
+        command.Faulted += OnCommandFaulted;
+        return command;
+    }
+
+    private RelayCommand Track(RelayCommand command)
+    {
+        command.Faulted += OnCommandFaulted;
+        return command;
+    }
+
+    private void OnCommandFaulted(object? sender, Exception exception) => SetFailure(exception);
 
     private static A276AcquisitionOptions CreateDefaultAcquisitionOptions() => new(
         InitialObservationWindow: TimeSpan.FromMilliseconds(250),

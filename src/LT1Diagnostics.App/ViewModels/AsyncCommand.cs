@@ -8,6 +8,8 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? canExecute = nu
 
     public event EventHandler? CanExecuteChanged;
 
+    public event EventHandler<Exception>? Faulted;
+
     public bool CanExecute(object? parameter) => !_executing && (canExecute?.Invoke() ?? true);
 
     public async void Execute(object? parameter) => await ExecuteAsync().ConfigureAwait(true);
@@ -24,6 +26,10 @@ public sealed class AsyncCommand(Func<Task> execute, Func<bool>? canExecute = nu
         try
         {
             await execute().ConfigureAwait(true);
+        }
+        catch (Exception exception) when (Faulted is not null && exception is not OperationCanceledException)
+        {
+            Faulted.Invoke(this, exception);
         }
         finally
         {
