@@ -60,6 +60,9 @@ public sealed class RawSessionWriter : IAsyncDisposable
             // a record after its header has reached the session stream.
             await _stream.WriteAsync(header, CancellationToken.None).ConfigureAwait(false);
             await _stream.WriteAsync(payload, CancellationToken.None).ConfigureAwait(false);
+            // Flush every committed record so captured evidence survives an application
+            // crash or power loss; the capture rate is low enough that this is cheap.
+            await _stream.FlushAsync(CancellationToken.None).ConfigureAwait(false);
             return sequence;
         }
         finally
@@ -114,6 +117,7 @@ public sealed class RawSessionWriter : IAsyncDisposable
             var preamble = new byte[RawSessionFormat.PreambleLength];
             RawSessionFormat.WritePreamble(preamble);
             _stream.Write(preamble);
+            _stream.Flush();
             _nextSequence = 0;
             return;
         }
