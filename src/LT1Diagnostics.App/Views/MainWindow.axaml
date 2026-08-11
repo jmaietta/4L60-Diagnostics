@@ -3,6 +3,7 @@
     x:DataType="vm:MainWindowViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:LT1Diagnostics.App.Converters"
     xmlns:protocol="using:LT1Diagnostics.Protocol.A276"
     xmlns:transport="using:LT1Diagnostics.Transport.Abstractions"
     xmlns:vm="using:LT1Diagnostics.App.ViewModels"
@@ -584,9 +585,9 @@
                   </Grid>
                   <Border Height="1" Background="#263349" />
                   <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Data source" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="{Binding DeviceSummary}" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding InterfaceStatus}" FontSize="13" FontWeight="Bold" Foreground="#60A5FA" VerticalAlignment="Center" /></Grid>
-                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Connection" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Cable or built-in demo connection state" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding ConnectionDisplayStatus}" FontSize="13" FontWeight="Bold" Foreground="#86EFAC" VerticalAlignment="Center" /></Grid>
-                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Data quality" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Checks for damaged or incomplete messages" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding QualityStatus}" FontSize="13" FontWeight="Bold" Foreground="#86EFAC" VerticalAlignment="Center" /></Grid>
-                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Diagnostic snapshot" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Required Roadmaster messages received" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding SnapshotDisplayStatus}" FontSize="13" FontWeight="Bold" Foreground="#86EFAC" VerticalAlignment="Center" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Connection" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Cable or built-in demo connection state" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding ConnectionDisplayStatus}" FontSize="13" FontWeight="Bold" Foreground="{Binding ConnectionDisplayStatus, Converter={x:Static converters:StatusToBrushConverter.Instance}}" VerticalAlignment="Center" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Data quality" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Checks for damaged or incomplete messages" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding QualityStatus}" FontSize="13" FontWeight="Bold" Foreground="{Binding QualityStatus, Converter={x:Static converters:StatusToBrushConverter.Instance}}" VerticalAlignment="Center" /></Grid>
+                  <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14"><StackPanel Spacing="4"><TextBlock Text="Diagnostic snapshot" FontSize="15" FontWeight="SemiBold" Foreground="#F8FAFC" /><TextBlock Text="Required Roadmaster messages received" FontSize="14" FontWeight="Medium" Foreground="#CBD5E1" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding SnapshotDisplayStatus}" FontSize="13" FontWeight="Bold" Foreground="{Binding SnapshotDisplayStatus, Converter={x:Static converters:StatusToBrushConverter.Instance}}" VerticalAlignment="Center" /></Grid>
                 </StackPanel>
               </Border>
             </Grid>
