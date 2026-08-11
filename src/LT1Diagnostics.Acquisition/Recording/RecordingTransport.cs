@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using LT1Diagnostics.Acquisition.RawSessions;
@@ -26,7 +25,7 @@ public sealed class RecordingTransport(ITransport inner, RawSessionWriter writer
         await inner.ConnectAsync(device, settings, cancellationToken).ConfigureAwait(false);
         await writer.AppendAsync(
             RawSessionRecordType.TransportConnected,
-            MonotonicTicks(),
+            MonotonicClock.GetTimestamp(),
             DateTimeOffset.UtcNow,
             RawSessionRecordAttributes.None,
             Encoding.UTF8.GetBytes(device.Id),
@@ -38,7 +37,7 @@ public sealed class RecordingTransport(ITransport inner, RawSessionWriter writer
         ObjectDisposedException.ThrowIf(_disposed, this);
         // Record when transmission starts, not after it completes, so replay timing
         // matches the instant the bytes reached the wire.
-        long writeStartTimestamp = MonotonicTicks();
+        long writeStartTimestamp = MonotonicClock.GetTimestamp();
         var writeStartWallClock = DateTimeOffset.UtcNow;
         await inner.WriteAsync(data, cancellationToken).ConfigureAwait(false);
         await writer.AppendAsync(
@@ -72,7 +71,7 @@ public sealed class RecordingTransport(ITransport inner, RawSessionWriter writer
         await inner.DisconnectAsync(cancellationToken).ConfigureAwait(false);
         await writer.AppendAsync(
             RawSessionRecordType.TransportDisconnected,
-            MonotonicTicks(),
+            MonotonicClock.GetTimestamp(),
             DateTimeOffset.UtcNow,
             RawSessionRecordAttributes.None,
             ReadOnlyMemory<byte>.Empty,
@@ -125,6 +124,4 @@ public sealed class RecordingTransport(ITransport inner, RawSessionWriter writer
 
         return result;
     }
-
-    private static long MonotonicTicks() => Stopwatch.GetElapsedTime(0, Stopwatch.GetTimestamp()).Ticks;
 }

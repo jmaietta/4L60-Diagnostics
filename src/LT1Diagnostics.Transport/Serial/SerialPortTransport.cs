@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.IO.Ports;
 using System.Runtime.CompilerServices;
 using LT1Diagnostics.Transport.Abstractions;
@@ -130,7 +129,7 @@ public sealed class SerialPortTransport : ITransport
 
             var bytes = new byte[count];
             buffer.AsSpan(0, count).CopyTo(bytes);
-            long timestamp = MonotonicTicks();
+            long timestamp = MonotonicClock.GetTimestamp();
             yield return new TransportChunk(
                 bytes,
                 timestamp,
@@ -201,10 +200,8 @@ public sealed class SerialPortTransport : ITransport
 
     private static TransportChunk CreateEventChunk(TransportChunkKind kind, string detail) => new(
         ReadOnlyMemory<byte>.Empty,
-        MonotonicTicks(),
+        MonotonicClock.GetTimestamp(),
         DateTimeOffset.UtcNow,
         kind,
         new TransportDiagnostics(Detail: detail));
-
-    private static long MonotonicTicks() => Stopwatch.GetElapsedTime(0, Stopwatch.GetTimestamp()).Ticks;
 }
