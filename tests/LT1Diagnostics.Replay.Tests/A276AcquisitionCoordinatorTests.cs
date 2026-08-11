@@ -1,7 +1,10 @@
+using System.Runtime.CompilerServices;
+using System.Threading.Channels;
 using LT1Diagnostics.Acquisition.A276;
 using LT1Diagnostics.Acquisition.RawSessions;
 using LT1Diagnostics.Acquisition.Recording;
 using LT1Diagnostics.Protocol.A276;
+using LT1Diagnostics.Protocol.Aldl;
 using LT1Diagnostics.Simulator;
 using LT1Diagnostics.Transport.Abstractions;
 
@@ -138,5 +141,215 @@ public sealed class A276AcquisitionCoordinatorTests
         var invalid = new A276AcquisitionOptions(TimeSpan.Zero, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
         Assert.Throws<ArgumentOutOfRangeException>(() => new A276AcquisitionCoordinator(invalid));
+    }
+
+    [Fact]
+    public async Task LateIdentityResponseTimesOutAndRestorationStillRuns()
+    {
+        await using var transport = new LateIdentityResponseTransport(identityDelay: TimeSpan.FromMilliseconds(150));
+        TransportDevice device = Assert.Single(await transport.DiscoverAsync(CancellationToken.None));
+        await transport.ConnectAsync(device, new TransportSettings(), CancellationToken.None);
+
+        A276AcquisitionResult result = await new A276AcquisitionCoordinator(TestOptions)
+            .AcquireSnapshotAsync(transport);
+
+        Assert.Equal(A276AcquisitionOutcome.IdentityTimeout, result.Outcome);
+        Assert.Null(result.IdentityResponse);
+        Assert.True(result.RestorationAttempted);
+        Assert.True(result.RestorationCompleted);
+        Assert.DoesNotContain(
+            transport.TransmittedRequests,
+            request => request.SequenceEqual(A276MessageFactory.CreateMode1Request(1)));
+        Assert.Contains(
+            transport.TransmittedRequests,
+            request => request.SequenceEqual(A276MessageFactory.CreateEnableNormalCommunicationsRequest()));
+        Assert.Contains(
+            transport.TransmittedRequests,
+            request => request.SequenceEqual(A276MessageFactory.CreateReturnToNormalModeRequest()));
+    }
+
+    private sealed class LateIdentityResponseTransport(TimeSpan identityDelay) : ITransport
+    {
+        private readonly Lock _gate = new();
+        private readonly List<byte[]> _transmittedRequests = [];
+        private Channel<TransportChunk>? _chunks;
+        private long _timestamp;
+        private bool _connected;
+        private bool _disposed;
+
+        public IReadOnlyList<byte[]> TransmittedRequests
+        {
+            get
+            {
+                lock (_gate)
+                {
+                    return _transmittedRequests.Select(request => request.ToArray()).ToArray();
+                }
+            }
+        }
+
+        public string TransportId => "late-identity-response";
+
+        public TransportCapabilities Capabilities =>
+            TransportCapabilities.Discovery | TransportCapabilities.Read | TransportCapabilities.Write;
+
+        public Task<IReadOnlyList<TransportDevice>> DiscoverAsync(CancellationToken cancellationToken)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            cancellationToken.ThrowIfCancellationRequested();
+            IReadOnlyList<TransportDevice> devices =
+            [
+                new("late-identity-response", "Late identity response test transport"),
+            ];
+            return Task.FromResult(devices);
+        }
+
+        public Task ConnectAsync(
+            TransportDevice device,
+            TransportSettings settings,
+            CancellationToken cancellationToken)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            cancellationToken.ThrowIfCancellationRequested();
+            lock (_gate)
+            {
+                if (_connected)
+                {
+                    throw new InvalidOperationException("The transport is already connected.");
+                }
+
+                _chunks = Channel.CreateUnbounded<TransportChunk>(new UnboundedChannelOptions
+                {
+                    SingleReader = true,
+                    SingleWriter = false,
+                    AllowSynchronousContinuations = false,
+                });
+                _timestamp = TimeSpan.FromMilliseconds(1).Ticks;
+                _connected = true;
+
+                for (int index = 0; index < 3; index++)
+                {
+                    QueueData(AldlFrameBuilder.Build(A276MessageFactory.DeviceAddress, 0x01, new byte[46]));
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public ValueTask WriteAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            cancellationToken.ThrowIfCancellationRequested();
+            lock (_gate)
+            {
+                if (!_connected || _chunks is null)
+                {
+                    throw new InvalidOperationException("The transport is not connected.");
+                }
+
+                byte[] request = data.ToArray();
+                _transmittedRequests.Add(request);
+
+                if (!AldlFrameBuilder.TryParse(request, out AldlFrame? frame) ||
+                    frame is null ||
+                    !frame.ChecksumValid ||
+                    frame.DeviceAddress != A276MessageFactory.DeviceAddress)
+                {
+                    return ValueTask.CompletedTask;
+                }
+
+                switch (frame.Mode)
+                {
+                    case 0x08 or 0x09:
+                        QueueData(request);
+                        QueueData(request);
+                        break;
+                    case 0x01 when frame.Payload.Length == 1 && frame.Payload.Span[0] == 4:
+                        QueueData(request);
+                        byte[] lateResponse = AldlFrameBuilder.Build(
+                            A276MessageFactory.DeviceAddress,
+                            0x01,
+                            new byte[A276MessageFactory.GetMode1DataByteCount(4)]);
+                        _ = QueueAfterDelayAsync(lateResponse, identityDelay);
+                        break;
+                }
+            }
+
+            return ValueTask.CompletedTask;
+        }
+
+        public async IAsyncEnumerable<TransportChunk> ReadAllAsync(
+            [EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            ChannelReader<TransportChunk> reader;
+            lock (_gate)
+            {
+                if (!_connected || _chunks is null)
+                {
+                    throw new InvalidOperationException("The transport is not connected.");
+                }
+
+                reader = _chunks.Reader;
+            }
+
+            await foreach (TransportChunk chunk in reader.ReadAllAsync(cancellationToken).ConfigureAwait(false))
+            {
+                yield return chunk;
+            }
+        }
+
+        public Task DisconnectAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            lock (_gate)
+            {
+                if (_connected)
+                {
+                    _connected = false;
+                    _chunks?.Writer.TryComplete();
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            await DisconnectAsync(CancellationToken.None).ConfigureAwait(false);
+            _disposed = true;
+        }
+
+        private async Task QueueAfterDelayAsync(byte[] bytes, TimeSpan delay)
+        {
+            await Task.Delay(delay).ConfigureAwait(false);
+            lock (_gate)
+            {
+                if (_connected && _chunks is not null)
+                {
+                    QueueData(bytes);
+                }
+            }
+        }
+
+        private void QueueData(byte[] bytes)
+        {
+            _timestamp = checked(_timestamp + TimeSpan.FromMilliseconds(1).Ticks);
+            _chunks!.Writer.TryWrite(new TransportChunk(
+                bytes,
+                _timestamp,
+                DateTimeOffset.UnixEpoch + TimeSpan.FromTicks(_timestamp),
+                TransportChunkKind.Data,
+                new TransportDiagnostics(
+                    TransportQuality.SimulatedFault,
+                    "Synthetic late-response traffic; not vehicle evidence.",
+                    FirstByteTimestamp: _timestamp,
+                    LastByteTimestamp: _timestamp)));
+        }
     }
 }

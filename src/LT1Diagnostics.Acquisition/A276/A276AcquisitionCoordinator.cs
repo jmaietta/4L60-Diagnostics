@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Threading.Channels;
 using LT1Diagnostics.Protocol.A276;
 using LT1Diagnostics.Protocol.Aldl;
@@ -154,75 +153,7 @@ public sealed class A276AcquisitionCoordinator
 
         try
         {
-            progress?.Report(new A276AcquisitionProgress(
-                A276AcquisitionStage.ObservingBus,
-                "Preserving initial traffic and identifying valid ALDL module addresses."));
-            await Task.Delay(_options.InitialObservationWindow, cancellationToken).ConfigureAwait(false);
-
-            if (!_observedAddresses.ContainsKey(A276MessageFactory.DeviceAddress))
-            {
-                outcome = A276AcquisitionOutcome.PcmNotObserved;
-                detail = "No checksum-valid F4 PCM frame was observed, so the application sent no bus-control request.";
-            }
-            else
-            {
-                progress?.Report(new A276AcquisitionProgress(
-                    A276AcquisitionStage.DisablingNormalCommunications,
-                    "Sending the documented F4 Mode 8 request; no other observed module will be controlled."));
-                disableSent = true;
-                disableAcknowledgement = await SendControlAndWaitAsync(
-                    connectedTransport,
-                    A276MessageFactory.CreateDisableNormalCommunicationsRequest(),
-                    expectedMode: 0x08,
-                    cancellationToken).ConfigureAwait(false);
-
-                if (disableAcknowledgement == A276ControlAcknowledgement.None)
-                {
-                    outcome = A276AcquisitionOutcome.DisableCommunicationsTimeout;
-                    detail = "The documented F4 Mode 8 request was sent, but no acknowledgement or indistinguishable exact echo was received.";
-                }
-                else
-                {
-                    progress?.Report(new A276AcquisitionProgress(
-                        A276AcquisitionStage.RequestingIdentity,
-                        "Requesting documented A276 Mode 1 Message 4 identity data."));
-                    identityResponse = await SendDatasetAndWaitAsync(
-                        connectedTransport,
-                        requestId: "a276-message-4-identity",
-                        datasetId: 4,
-                        cancellationToken).ConfigureAwait(false);
-
-                    if (identityResponse is null)
-                    {
-                        outcome = A276AcquisitionOutcome.IdentityTimeout;
-                        detail = "The PCM did not return a valid documented Message 4 response before the explicit timeout.";
-                    }
-                    else
-                    {
-                        progress?.Report(new A276AcquisitionProgress(
-                            A276AcquisitionStage.RequestingTransmissionData,
-                            "Requesting documented A276 Mode 1 Message 1 transmission data."));
-                        transmissionResponse = await SendDatasetAndWaitAsync(
-                            connectedTransport,
-                            requestId: "a276-message-1-transmission",
-                            datasetId: 1,
-                            cancellationToken).ConfigureAwait(false);
-
-                        if (transmissionResponse is null)
-                        {
-                            outcome = A276AcquisitionOutcome.TransmissionDataTimeout;
-                            detail = "The PCM did not return a valid documented Message 1 response before the explicit timeout.";
-                        }
-                        else
-                        {
-                            outcome = A276AcquisitionOutcome.Completed;
-                            detail = disableAcknowledgement == A276ControlAcknowledgement.Explicit
-                                ? "Identity and transmission snapshots were correlated to their documentary A276 requests."
-                                : "Identity and transmission snapshots were received; the Mode 8 acknowledgement was indistinguishable from a cable echo and remains vehicle-verification evidence.";
-                        }
-                    }
-                }
-            }
+            await RunSnapshotSequenceAsync().ConfigureAwait(false);
         }
         finally
         {
@@ -270,6 +201,75 @@ public sealed class A276AcquisitionCoordinator
             ReadOptionalTimestamp(ref _firstDataTimestamp),
             ReadOptionalTimestamp(ref _lastDataTimestamp),
             _transmissionObservations.ToArray());
+
+        async Task RunSnapshotSequenceAsync()
+        {
+            progress?.Report(new A276AcquisitionProgress(
+                A276AcquisitionStage.ObservingBus,
+                "Preserving initial traffic and identifying valid ALDL module addresses."));
+            await Task.Delay(_options.InitialObservationWindow, cancellationToken).ConfigureAwait(false);
+
+            if (!_observedAddresses.ContainsKey(A276MessageFactory.DeviceAddress))
+            {
+                outcome = A276AcquisitionOutcome.PcmNotObserved;
+                detail = "No checksum-valid F4 PCM frame was observed, so the application sent no bus-control request.";
+                return;
+            }
+
+            progress?.Report(new A276AcquisitionProgress(
+                A276AcquisitionStage.DisablingNormalCommunications,
+                "Sending the documented F4 Mode 8 request; no other observed module will be controlled."));
+            disableSent = true;
+            disableAcknowledgement = await SendControlAndWaitAsync(
+                connectedTransport,
+                A276MessageFactory.CreateDisableNormalCommunicationsRequest(),
+                expectedMode: 0x08,
+                cancellationToken).ConfigureAwait(false);
+
+            if (disableAcknowledgement == A276ControlAcknowledgement.None)
+            {
+                outcome = A276AcquisitionOutcome.DisableCommunicationsTimeout;
+                detail = "The documented F4 Mode 8 request was sent, but no acknowledgement or indistinguishable exact echo was received.";
+                return;
+            }
+
+            progress?.Report(new A276AcquisitionProgress(
+                A276AcquisitionStage.RequestingIdentity,
+                "Requesting documented A276 Mode 1 Message 4 identity data."));
+            identityResponse = await SendDatasetAndWaitAsync(
+                connectedTransport,
+                requestId: "a276-message-4-identity",
+                datasetId: 4,
+                cancellationToken).ConfigureAwait(false);
+
+            if (identityResponse is null)
+            {
+                outcome = A276AcquisitionOutcome.IdentityTimeout;
+                detail = "The PCM did not return a valid documented Message 4 response before the explicit timeout.";
+                return;
+            }
+
+            progress?.Report(new A276AcquisitionProgress(
+                A276AcquisitionStage.RequestingTransmissionData,
+                "Requesting documented A276 Mode 1 Message 1 transmission data."));
+            transmissionResponse = await SendDatasetAndWaitAsync(
+                connectedTransport,
+                requestId: "a276-message-1-transmission",
+                datasetId: 1,
+                cancellationToken).ConfigureAwait(false);
+
+            if (transmissionResponse is null)
+            {
+                outcome = A276AcquisitionOutcome.TransmissionDataTimeout;
+                detail = "The PCM did not return a valid documented Message 1 response before the explicit timeout.";
+                return;
+            }
+
+            outcome = A276AcquisitionOutcome.Completed;
+            detail = disableAcknowledgement == A276ControlAcknowledgement.Explicit
+                ? "Identity and transmission snapshots were correlated to their documentary A276 requests."
+                : "Identity and transmission snapshots were received; the Mode 8 acknowledgement was indistinguishable from a cable echo and remains vehicle-verification evidence.";
+        }
     }
 
     private async Task ReadTransportAsync(ITransport transport, CancellationToken cancellationToken)
@@ -443,7 +443,7 @@ public sealed class A276AcquisitionCoordinator
     private void ExpectEcho(ReadOnlySpan<byte> request)
     {
         long lastTimestamp = Interlocked.Read(ref _lastInboundTimestamp);
-        long basis = lastTimestamp == 0 ? MonotonicTicks() : lastTimestamp;
+        long basis = lastTimestamp == 0 ? MonotonicClock.GetTimestamp() : lastTimestamp;
         lock (_echoGate)
         {
             ReadOnlyMemory<byte> pending = _echoFilter.Cancel();
@@ -504,8 +504,6 @@ public sealed class A276AcquisitionCoordinator
         long value = Interlocked.Read(ref location);
         return value == long.MinValue ? null : value;
     }
-
-    private static long MonotonicTicks() => Stopwatch.GetElapsedTime(0, Stopwatch.GetTimestamp()).Ticks;
 
     private sealed record InboundObservation(AldlFrame? Frame, bool ExactEcho, long Timestamp);
 }
